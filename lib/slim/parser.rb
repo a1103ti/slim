@@ -5,7 +5,6 @@ module Slim
   class Parser < Temple::Parser
     define_options :file,
                    :default_tag,
-                   :escape_quoted_attrs => false,
                    :tabsize => 4,
                    :encoding => 'utf-8',
                    :shortcut => {
@@ -25,7 +24,7 @@ module Slim
       end
 
       def to_s
-        line = @line.strip
+        line = @line.lstrip
         column = @column + line.size - @line.size
         %{#{error}
   #{file}, Line #{lineno}, Column #{@column}
@@ -37,7 +36,14 @@ module Slim
 
     def initialize(opts = {})
       super
-      @tab = ' ' * options[:tabsize]
+      tabsize = options[:tabsize]
+      if tabsize > 1
+        @tab_re = /\G((?: {#{tabsize}})*) {0,#{tabsize-1}}\t/
+        @tab = '\1' + ' ' * tabsize
+      else
+        @tab_re = "\t"
+        @tab = ' '
+      end
       @tag_shortcut, @attr_shortcut = {}, {}
       options[:shortcut].each do |k,v|
         raise ArgumentError, 'Shortcut requires :tag and/or :attr' unless (v[:attr] || v[:tag]) && (v.keys - [:attr, :tag]).empty?
@@ -47,8 +53,8 @@ module Slim
           raise ArgumentError, 'You can only use special characters for attribute shortcuts' if k =~ /(#{WORD_RE}|-)/
         end
       end
-      @attr_shortcut_re = /\A(#{shortcut_re @attr_shortcut})(#{WORD_RE}(?:#{WORD_RE}|-)*#{WORD_RE}|#{WORD_RE}+)/
-      @tag_re = /\A(?:#{shortcut_re @tag_shortcut}|\*(?=[^\s]+)|(#{WORD_RE}(?:#{WORD_RE}|:|-)*#{WORD_RE}|#{WORD_RE}+))/
+      @attr_shortcut_re = /\A(#{Regexp.union @attr_shortcut.keys})(#{WORD_RE}(?:#{WORD_RE}|-)*#{WORD_RE}|#{WORD_RE}+)/
+      @tag_re = /\A(?:#{Regexp.union @tag_shortcut.keys}|\*(?=[^\s]+)|(#{WORD_RE}(?:#{WORD_RE}|:|-)*#{WORD_RE}|#{WORD_RE}+))/
     end
 
     # Compile string to Temple expression
@@ -81,11 +87,6 @@ module Slim
     ATTR_NAME = "\\A\\s*(#{WORD_RE}(?:#{WORD_RE}|:|-)*)"
     QUOTED_ATTR_RE = /#{ATTR_NAME}=(=?)("|')/
     CODE_ATTR_RE = /#{ATTR_NAME}=(=?)/
-
-    # Compile shortcut regular expression
-    def shortcut_re(shortcut)
-      shortcut.map { |k,v| Regexp.escape(k) }.join('|')
-    end
 
     # Set string encoding if option is set
     def set_encoding(s)
@@ -152,7 +153,7 @@ module Slim
     def get_indent(line)
       # Figure out the indentation. Kinda ugly/slow way to support tabs,
       # but remember that this is only done at parsing time.
-      line[/\A[ \t]*/].gsub("\t", @tab).size
+      line[/\A[ \t]*/].gsub(@tab_re, @tab).size
     end
 
     def parse_line
@@ -346,8 +347,10 @@ module Slim
         tag << [:slim, :output, $1 != '=', parse_broken_line, block]
         @stacks.last << [:static, ' '] unless $2.empty?
         @stacks << block
-      when /\A\s*\//
+      when /\A\s*\/\s*/
         # Closed tag. Do nothing
+        @line = $'
+        syntax_error!('Unexpected text after closed tag') unless @line.empty?
       when /\A\s*\Z/
         # Empty content
         content = [:multi]
@@ -392,18 +395,13 @@ module Slim
           # Value is quoted (static)
           @line = $'
           attributes << [:html, :attr, $1,
-                         [:escape, options[:escape_quoted_attrs] && $2.empty?,
-                          [:slim, :interpolate, parse_quoted_attribute($3)]]]
+                         [:escape, $2.empty?, [:slim, :interpolate, parse_quoted_attribute($3)]]]
         when CODE_ATTR_RE
           # Value is ruby code
           @line = $'
           name = $1
           escape = $2.empty?
           value = parse_ruby_code(delimiter)
-          # Remove attribute wrapper which doesn't belong to the ruby code
-          # e.g id=[hash[:a] + hash[:b]]
-          value = value[1..-2] if value =~ DELIM_RE &&
-            DELIMS[$&] == value[-1, 1]
           syntax_error!('Invalid empty attribute') if value.empty?
           attributes << [:html, :attr, name, [:slim, :attrvalue, escape, value]]
         else
