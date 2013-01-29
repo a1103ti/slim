@@ -62,7 +62,7 @@ Rails コミュニティの中で, _Erb_ と _Haml_ は間違いなく最も人�
 
 Slim は 最小限の構文とスピードをもたらすために生まれました。 もし Slim を選択しない場合, その理由はスピード以外の理由によるものでしょう。
 
-___そう, Slim は速い!___ ベンチマークはコミット毎に {http://travis-ci.org/#!/slim-template/slim} で取られています。
+___そう, Slim は速い!___ ベンチマークはコミット毎に <http://travis-ci.org/#!/slim-template/slim> で取られています。
 この数字が信じられませんか? それは仕方ないことです。是非 rake タスクを使って自分でベンチマークを取ってみてください!
 
 ### どう始めるの?
@@ -937,7 +937,7 @@ markdown:
 
     rake bench slow=1 iterations=1000
 
-私たちはコミット毎に Travis-CI でベンチマークをとっています。最新のベンチマーク結果はリンク先を確認: {http://travis-ci.org/#!/slim-template/slim}
+私たちはコミット毎に Travis-CI でベンチマークをとっています。最新のベンチマーク結果はリンク先を確認: <http://travis-ci.org/#!/slim-template/slim>
 
 ### テストスイートと継続的インテグレーション
 
@@ -946,7 +946,7 @@ rails のインテグレーションテストの場合 'rake test:rails' で実�
 
 私たちは現在 markdown ファイルで書かれた人間が読めるテストを試しています: {ファイル:test/literate/TESTS.md TESTS.md}
 
-Travis-CI は継続的インテグレーションテストに利用されています: {http://travis-ci.org/#!/slim-template/slim}
+Travis-CI は継続的インテグレーションテストに利用されています: <http://travis-ci.org/#!/slim-template/slim>
 
 Slim はすべての主要な Ruby 実装で動作します:
 
