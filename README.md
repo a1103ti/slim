@@ -944,7 +944,7 @@ markdown:
 Slim は minitest ベースの拡張性のあるテストスイートを提供します。テストは 'rake test' または
 rails のインテグレーションテストの場合 'rake test:rails' で実行できます。
 
-私たちは現在 markdown ファイルで書かれた人間が読めるテストを試しています: {ファイル:test/literate/TESTS.md TESTS.md}
+私たちは現在 markdown ファイルで書かれた人間が読めるテストを試しています: [TESTS.md](test/literate/TESTS.md)
 
 Travis-CI は継続的インテグレーションテストに利用されています: <http://travis-ci.org/#!/slim-template/slim>
 
