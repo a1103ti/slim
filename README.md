@@ -2,96 +2,96 @@
 
 [![Gem Version](https://badge.fury.io/rb/slim.png)](http://rubygems.org/gems/slim) [![Build Status](https://secure.travis-ci.org/slim-template/slim.png?branch=master)](http://travis-ci.org/slim-template/slim) [![Dependency Status](https://gemnasium.com/slim-template/slim.png?travis)](https://gemnasium.com/slim-template/slim) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/slim-template/slim)
 
-Slim is a template language whose goal is to reduce the view syntax to the essential parts without becoming cryptic. It started as an exercise to see how much could be removed from a standard html template (<, >, closing tags, etc...). As more people took an interest in Slim, the functionality grew and so did the flexibility of the syntax.
+Slim は 不可解にならないように view の構文を本質的な部品まで減らすことを目指したテンプレート言語です。標準的な HTML テンプレートからどれだけのものが削除できるか確かめるところから始まりました。(<, >, 閉じタグなど) 多くの人が Slim に興味を持ったことで, 機能性は発展し, 柔軟な構文をもたらしました。
 
-A short list of the features...
+機能の短いリスト
 
-* Elegant syntax
-    * Short syntax without closing tags (Using indentation instead)
-    * HTML style mode with closing tags
-    * Configurable shortcut tags (`#` for `<div id="...">` and `.` for `<div class="...">` in the default configuration)
-* Safety
-    * Automatic HTML escaping by default
-    * Support for Rails' `html_safe?`
-* Highly configurable and extendable via plugins
-    * Logic less mode similar to Mustache, realized as plugin
-    * Translator/I18n, realized as plugin
-* High performance
-    * Comparable speed to ERB/Erubis
-    * Streaming support in Rails
-* Supported by all major frameworks (Rails, Sinatra, ...)
-* Full Unicode support for tags and attributes on Ruby 1.9
-* Embedded engines like Markdown and Textile
+* すっきりした構文
+    * 閉じタグの無い短い構文 (代わりにインデントを用いる)
+    * 閉じタグを用いた HTML 形式の構文
+    * 設定可能なショートカットタグ (デフォルトでは `#` は `<div id="...">` に, `.` は `<div class="...">` に)
+* 安全性
+    * デフォルトで自動 HTML エスケープ
+    * Rails の `html_safe?` に対応
+* プラグインを用いた柔軟な設定と拡張性
+    * Mustache のようなロジックレスモードをプラグインで実現
+    * 多言語化/I18n をプラグインで実現
+* 高性能
+    * ERB/Erubis に匹敵するスピード
+    * Rails のストリーミングに対応
+* 全てのメジャーフレームワークが対応 (Rails, Sinatra, ...)
+* Ruby 1.9 では タグや属性の Unicode に完全対応
+* Markdown や Textile のような埋め込みエンジン
 
 ## Upgrade to version 2.0
 
-__NOTE:__ Slim 2.0 is not yet released, but you can try the preview versions.
+__NOTE:__ Slim 2.0 はまだリリースされていませんが, preview バージョンを試すことができます。
 
-If you are already using Slim 1.3 or 1.2 and want to upgrade to the newest version 2.0, you should at first
-upgrade to Slim 1.3.7 which will emit warnings for deprecated features. This way you can easily
-see if your application is already Slim 2.0 compliant!
+すでに Slim 1.3 や 1.2 を使用していて最新バージョンの 2.0 にアップグレードしたい場合, まず非推奨機能の
+エラーを出す Slim 1.3.7 にアップグレードするべきです。これはあなたのアプリケーションが Slim 2.0 に準拠
+しているか簡単に確認する方法です。
 
-Slim 2.0 removes deprecated features from the 1.3 series and cleans up some minor
-inconsistencies in the syntax (Attribute wrapper and quoted attribute escaping).
-Of course it also includes new features and bugfixes. See the CHANGES for details.
+Slim 2.0 は 1.3 シリーズから非推奨機能を取り除き構文のマイナーな矛盾を
+整理しています (属性の囲みや引用符で囲まれた属性のエスケープ)。
+もちろん新機能やバグフィックスも含みます。詳細は CHANGES を参照してください。
 
-In general don't be afraid of upgrading! We try to be backward compatible and follow [semantic versions](http://semver.org/)
-as good as possible.
+ほとんどの場合アップグレードを恐れてはいけません。わたしたちは後方互換を保つように努め, [semantic versions](http://semver.org/) 
+に可能なかぎり対応しています。
 
-## Introduction
+## イントロダクション
 
-### What is Slim?
+### Slim とは?
 
-Slim is a fast, lightweight templating engine with support for __Rails 3__. It has been heavily tested on all major ruby implementations. We use
-continous integration (travis-ci).
+Slim は Rails3 に対応した高速, 軽量なテンプレートエンジンです。すべての主要な Ruby の実装でしっかりテストされています。
+私たちは継続的インテグレーションを採用しています。(travis-ci)
 
-Slim's core syntax is guided by one thought: "What's the minimum required to make this work".
+Slim の核となる構文は1つの考えによって導かれます: "この動作を行うために最低限必要なものは何か"。
 
-As more people have contributed to Slim, there have been syntax additions influenced from their use of [Haml](https://github.com/haml/haml) and [Jade](https://github.com/visionmedia/jade).  The Slim team is open to these additions because we know beauty is in the eye of the beholder.
+多くの人々の Slim への貢献によって, 彼らが使う [Haml](https://github.com/haml/haml) や [Jade](https://github.com/visionmedia/jade) の影響を受け構文の追加が行われています。 Slim の開発チームは美は見る人の目の中にあることを分っているのでこういった追加にオープンです。
 
-Slim uses [Temple](https://github.com/judofyr/temple) for parsing/compilation and is also integrated into [Tilt](https://github.com/rtomayko/tilt), so it can be used together with [Sinatra](https://github.com/sinatra/sinatra) or plain [Rack](https://github.com/rack/rack).
+Slim は 構文解析/コンパイルに [Temple](https://github.com/judofyr/temple) を使い [Tilt](https://github.com/rtomayko/tilt) に組み込まれます。これにより [Sinatra](https://github.com/sinatra/sinatra) やプレーンな [Rack](https://github.com/rack/rack) とも一緒に使えます。
 
-The architecture of Temple is very flexible and allows the extension of the parsing and compilation process without monkey-patching. This is used
-by the logic less plugin and the translator plugin which provides I18n.
+Temple のアーキテクチャはとても柔軟でモンキーパッチなしで構文解析とコンパイルのプロセスの拡張を可能にします。これはロジックレスのプラグインや I18n が提供する翻訳プラグインに
+使用されます。
 
-### Why use Slim?
+### なぜ Slim を使うのか?
 
-Within the Rails community, _Erb_ and _Haml_ are without doubt the two most popular templating engines. However, _Erb_'s syntax is cumbersome and _Haml_'s syntax can be quite cryptic to the uninitiated.
+Rails コミュニティの中で, _Erb_ と _Haml_ は間違いなく最も人気がある2つのテンプレートエンジンです。しかしながら, _Erb_ の構文は扱いにくく, _Haml_ の構文は初心者にはとても謎めいている場合があります。
 
-There is also some development in logic-less engines (e.g. [Mustache](https://github.com/defunkt/mustache) which requires you to write standard HTML). You can also use Slim in logic-less mode if you like the Slim syntax to build your HTML but don't want to write Ruby in your templates.
+ロジックレスエンジンのいくつかの発展もあります (例: 標準のHTMLを書かなければいけない [Mustache](https://github.com/defunkt/mustache))。あなたの好みで Slim の構文で HTML をビルドすることができます。Slim の構文で HTML をビルドすることが好きだけどテンプレートに Ruby のコードを書きたくない場合でも Slim のロジックレスモードを使うことができます。
 
-Slim was born to bring a minimalist syntax approach with speed. If people chose not to use Slim, it would not be because of speed.
+Slim は 最小限の構文とスピードをもたらすために生まれました。 もし Slim を選択しない場合, その理由はスピード以外の理由によるものでしょう。
 
-___Yes, Slim is speedy!___ Benchmarks are done for every commit at <http://travis-ci.org/#!/slim-template/slim>.
-Don't trust the numbers? That's as it should be. Please try the benchmark rake task yourself!
+___そう, Slim は速い!___ ベンチマークはコミット毎に <http://travis-ci.org/#!/slim-template/slim> で取られています。
+この数字が信じられませんか? それは仕方ないことです。是非 rake タスクを使って自分でベンチマークを取ってみてください!
 
-### How to start?
+### どう始めるの?
 
-Install Slim as a gem:
+Slim を gem としてインストール:
 
     gem install slim
 
-Include Slim in your Gemfile with `gem 'slim'` or require it with `require 'slim'`. That's it! Now, just use the .slim extension and you're good to go.
+あなたの Gemfile に `gem 'slim'` と書いてインクルードするか, ファイルに `require 'slim'` と書く必要があります。これだけです! 後は拡張子に .slim を使うだけで準備はできています。
 
-### Syntax example
+### 構文例
 
-Here's a quick example to demonstrate what a Slim template looks like:
+Slim テンプレートがどのようなものか簡単な例を示します:
 
     doctype html
     html
       head
-        title Slim Examples
+        title Slim のファイル例
         meta name="keywords" content="template language"
         meta name="author" content=author
         link rel="icon" type="image/png" href=file_path("favicon.png")
         javascript:
-          alert('Slim supports embedded javascript!')
+          alert('Slim は javascript の埋め込みに対応します!')
 
       body
-        h1 Markup examples
+        h1 マークアップ例
 
         #content
-          p This example shows you how a basic Slim file looks like.
+          p このマークアップ例はあなたに Slim の典型的なファイルがどのようなものか示します。
 
         = yield
 
@@ -102,57 +102,57 @@ Here's a quick example to demonstrate what a Slim template looks like:
                 td.name = item.name
                 td.price = item.price
         - else
-          p No items found Please add some inventory.
-            Thank you!
+          p アイテムが見つかりませんでした。いくつか目録を追加してください。
+            ありがとう!
 
         div id="footer"
           = render 'footer'
           | Copyright &copy; #{@year} #{@author}
 
-Indentation matters, but the indentation depth can be chosen as you like. If you want to first indent 2 spaces, then 5 spaces, it's your choice. To nest markup you only need to indent by one space, the rest is gravy.
+インデントについて, インデントの深さはあなたの好みで選択できます。もし最初のインデントをスペース2つ, その次に5スペースを使いたい場合, それはあなたの選択次第です。マークアップを入れ子にするにはスペース1つのインデントが必要なだけです。
 
-## Line indicators
+## ラインインジケータ
 
-### Text `|`
+### テキスト `|`
 
-The pipe tells Slim to just copy the line. It essentially escapes any processing.
-Each following line that is indented greater than the pipe is copied over.
+パイプは Slim に行をコピーしろと命じます。基本的にどのような処理でもエスケープします。
+パイプよりも深くインデントされた各行がコピーされます。
 
     body
       p
         |
-          This is a test of the text block.
+          これはテキストブロックのテストです。
 
-  The parsed result of the above:
+  構文解析結果は以下:
 
-    <body><p>This is a test of the text block.</p></body>
+    <body><p>これはテキストブロックのテストです。</p></body>
 
-  The left margin is set at the indent of the pipe + one space.
-  Any additional spaces will be copied over.
+  ブロックの左端はパイプ +1 スペースのインデントに設定されています。 
+  追加のスペースはコピーされます。
 
     body
       p
-        |  This line is on the left margin.
-            This line will have one space in front of it.
-              This line will have two spaces in front of it.
-                And so on...
+        |  この行は左端になります。
+            この行はスペース1つを持つことになります。
+              この行はスペース2つを持つことになります。
+                以下同様に...
 
-You can also embed html in the text line
+テキスト行に HTML を埋め込むこともできます。
 
     - articles.each do |a|
       | <tr><td>#{a.name}</td><td>#{a.description}</td></tr>
 
-### Text with trailing white space `'`
+### テキスト行のスペースをたどる `'`
 
-The single quote tells Slim to copy the line (similar to `|`), but makes sure that a single trailing white space is appended.
+シングルクォートは Slim に行をコピーしろと命じます (`|` と同様に) が,  単一行の末尾にスペースが追加されているかチェックします。
 
-### Inline html `<` (HTML style)
+### インライン html `<` (HTML 形式)
 
-You can write html tags directly in Slim which allows you to write your templates in a more html like style with closing tags or mix html and Slim style.
+あなたは html タグを直接 Slim の中に書くことができます。Slim は閉じタグを使った html タグ形式や html と Slim を混ぜてテンプレートの中に書くことができます。
 
     <html>
       head
-        title Example
+        title 記述例
       <body>
         - if articles.empty?
         - else
@@ -162,71 +162,71 @@ You can write html tags directly in Slim which allows you to write your template
       </body>
     </html>
 
-### Control code `-`
+### 制御コード `-`
 
-The dash denotes control code.  Examples of control code are loops and conditionals. `end` is forbidden behind `-`. Blocks are defined only by indentation.
-If your ruby code needs to use multiple lines, append a backslash `\` at the end of the lines. If your line ends with comma `,` (e.g because of a method call) you don't need the additional backslash before the linebreak.
+ダッシュは制御コードを意味します。制御コードの例としてループと条件文があります。`end` は `-` の後ろに置くことができません。ブロックはインデントによってのみ定義されます。
+複数行にわたる Ruby のコードが必要な場合, 行末にバックスラッシュ `\` を追加します。行末がカンマ `,` で終わる場合 (例 関数呼び出し) には行末にバックスラッシュを追加する必要はありません。
 
     body
       - if articles.empty?
-        | No inventory
+        | 在庫なし
 
-### Output `=`
+### 出力 `=`
 
-The equal sign tells Slim it's a Ruby call that produces output to add to the buffer. If your ruby code needs to use multiple lines, append a backslash `\` at the end of the lines, for example:
+イコールはバッファに追加する出力を生成する Ruby 呼び出しを Slim に命令します。Ruby のコードが複数行にわたる場合, 例のように行末にバックスラッシュを追加します。
 
     = javascript_include_tag \
        "jquery", \
        "application"
 
-If your line ends with comma `,` (e.g because of a method call) you don't need the additional backslash before the linebreak.
+行末がカンマ `,` で終わる場合 (例 関数呼び出し) には行末にバックスラッシュを追加する必要はありません。
 
-### Output with trailing white space `='`
+### 出力のスペースをたどる `='`
 
-Same as the single equal sign (`=`), except that it adds a trailing white space.
+後に続くスペースを追加することを除き, 単一のイコール (`=`) と同じです。
 
-### Output without HTML escaping `==`
+### HTML エスケープを伴わない出力 `==`
 
-Same as the single equal sign (`=`), but does not go through the `escape_html` method.
+単一のイコール (`=`) と同じですが, `escape_html` メソッドを経由しません。
 
-### Output without HTML escaping and trailing ws `=='`
+### HTML エスケープを伴わず出力のスペースをたどらない `=='`
 
-Same as the double equal sign (`==`), except that it adds a trailing white space.
+後に続くスペースを追加することを除き, 二重のイコールと同じです。
 
-### Code comment `/`
+### コードコメント `/`
 
-Use the forward slash for code comments - anything after it won't get displayed in the final render. Use `/` for code comments and `/!` for html comments
+コードコメントにはスラッシュを使います。スラッシュ以降は最終的なレンダリング結果に表示されません。コードコメントには `/` を, html コメントには `/!` を使います。
 
     body
       p
-        / This line won't get displayed.
-          Neither does this line.
-        /! This will get displayed as html comments.
+        / この行は表示されません。
+          この行も表示されません。
+        /! html コメントとして表示されます。
 
-  The parsed result of the above:
+  構文解析結果は以下:
 
-    <body><p><!--This will get displayed as html comments.--></p></body>
+    <body><p><!--html コメントとして表示されます。--></p></body>
 
-### HTML comment `/!`
+### HTML コメント `/!`
 
-Use the forward slash immediately followed by an exclamation mark for html comments (`<!-- ... -->`).
+html コメントにはスラッシュの直後にエクスクラメーションマークを使います (`<!-- ... -->`)。
 
-### IE conditional comment `/[...]`
+### IE コンディショナルコメント `/[...]`
 
     /[if IE]
-        p Get a better browser.
+        p もっと良いブラウザを使ってください。
 
-renders as
+レンダリング結果
 
-    <!--[if IE]><p>Get a better browser.</p><![endif]-->
+    <!--[if IE]><p>もっと良いブラウザを使ってください。</p><![endif]-->
 
-## HTML tags
+## HTML タグ
 
-### Doctype tag
+### ドキュメントタイプタグ
 
-The doctype tag is a special tag which can be used to generate the complex doctypes in a very simple way.
+ドキュメントタイプタグはとても簡単な方法で複雑なドキュメントタイプを生成するために使われる特別なタグです。
 
-XML VERSION
+XML 宣言
 
     doctype xml
       <?xml version="1.0" encoding="utf-8" ?>
@@ -234,7 +234,7 @@ XML VERSION
     doctype xml ISO-8859-1
       <?xml version="1.0" encoding="iso-8859-1" ?>
 
-XHTML DOCTYPES
+XHTML ドキュメントタイプ
 
     doctype html
       <!DOCTYPE html>
@@ -266,7 +266,7 @@ XHTML DOCTYPES
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-HTML 4 DOCTYPES
+HTML 4 ドキュメントタイプ
 
     doctype strict
       <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
@@ -280,100 +280,100 @@ HTML 4 DOCTYPES
       <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
 
-### Closed tags (trailing `/`)
+### 閉じタグ (末尾 `/`)
 
-You can close tags explicitly by appending a trailing `/`.
+末尾に `/` を付けることで明示的にタグを閉じることができます。
 
     img src="image.png"/
 
-Note, that this is usually not necessary since the standard html
-tags (img, br, ...) are closed automatically.
+(注) 標準的な html タグ (img, br, ...) は自動的にタグを閉じるので,
+通常必要ありません。
 
-### Inline tags
+### インラインタグ
 
-Sometimes you may want to be a little more compact and inline the tags.
-
-    ul
-      li.first: a href="/a" A link
-      li: a href="/b" B link
-
-For readability, don't forget you can wrap the attributes.
+時々タグをよりコンパクトにインラインにしたくなるかもしれません。
 
     ul
-      li.first: a[href="/a"] A link
-      li: a[href="/b"] B link
+      li.first: a href="/a" A リンク
+      li: a href="/b" B リンク
 
-### Text content
+読みやすくするために, 属性を囲むことができるのを忘れないでください。
 
-Either start on the same line as the tag
+    ul
+      li.first: a[href="/a"] A リンク
+      li: a[href="/b"] B リンク
+
+### テキストコンテンツ
+
+タグと同じ行で開始するか
 
     body
-      h1 id="headline" Welcome to my site.
+      h1 id="headline" 私のサイトへようこそ。
 
-Or nest it.  You must use a pipe or a backtick to escape processing
+入れ子にするのかどちらかです。エスケープ処理を行うためにはパイプかバッククォートを使わなければなりません。
 
     body
       h1 id="headline"
-        | Welcome to my site.
+        | 私のサイトへようこそ。
 
-### Dynamic content (`=` and `==`)
+### 動的コンテンツ (`=` と `==`)
 
-Can make the call on the same line
+同じ行で呼び出すか
 
     body
       h1 id="headline" = page_headline
 
-Or nest it.
+入れ子にすることができます。
 
     body
       h1 id="headline"
         = page_headline
 
-### Attributes
+### 属性
 
-You write attributes directly after the tag. For normal text attributes you must use double `"` or single quotes `'` (Quoted attributes).
+タグの後に直接属性を書きます。属性のテキストにはダブルクォート `"` か シングルクォート `'` を使わなければなりません (引用符で囲まれた属性)。
 
-    a href="http://slim-lang.com" title='Slim Homepage' Goto the Slim homepage
+    a href="http://slim-lang.com" title='Slim のホームページ' Slim のホームページへ
 
-You can use text interpolation in the quoted attributes.
+引用符で囲まれたテキストを属性として使えます。
 
-#### Attributes wrapper
+#### 属性の囲み
 
-If a delimiter makes the syntax more readable for you,
-you can use the characters `{...}`, `(...)`, `[...]` to wrap the attributes.
+区切り文字が構文を読みやすくするのであれば,
+`{...}`, `(...)`, `[...]` が属性の囲みに使えます。
 
     body
       h1(id="logo") = page_logo
       h2[id="tagline" class="small tagline"] = page_tagline
 
-If you wrap the attributes, you can spread them across multiple lines:
+属性を囲んだ場合, 属性を複数行にわたって書くことができます:
 
     h2[id="tagline"
        class="small tagline"] = page_tagline
 
-#### Quoted attributes
+#### 引用符で囲まれた属性
 
-Example:
+例:
 
-    a href="http://slim-lang.com" title='Slim Homepage' Goto the Slim homepage
+    a href="http://slim-lang.com" title='Slim のホームページ' Slim のホームページへ
 
-You can use text interpolation in the quoted attributes:
+引用符で囲まれたテキストを属性として使えます:
 
-    a href="http://#{url}" Goto the #{url}
+    a href="http://#{url}" #{url} へ
 
-The attribute value will be escaped by default. Use == if you want to disable escaping in the attribute.
+属性値はデフォルトでエスケープされます。属性のエスケープを無効にしたい場合 == を使います。
 
     a href=="&amp;"
 
-You can break quoted attributes with backslash `\`
+引用符で囲まれた属性をバックスラッシュ `\` で改行できます。
 
-    a data-title="help" data-content="extremely long help text that goes on\
-      and one and one and then starts over...."
+    a data-title="help" data-content="極めて長い長い長いヘルプテキストで\
+      1つずつ1つずつその後はまたやり直して繰り返し...."
 
-#### Ruby attributes
+#### Ruby コードを用いた属性
 
-Write the ruby code directly after the `=`. If the code contains spaces you have to wrap
-the code into parentheses `(...)`. You can also directly write hashes `{...}` and arrays `[...]`.
+`=` の後に直接 Ruby コードを書きます。コードにスペースが含まれる場合,
+`(...)` の括弧でコードを囲まなければなりません。ハッシュを `{...}` に, 配列を `[...]` に書くこともできます。 
 
     body
       table
@@ -382,16 +382,16 @@ the code into parentheses `(...)`. You can also directly write hashes `{...}` an
             a href=user_action(user, :edit) Edit #{user.name}
             a href=(path_to_user user) = user.name
 
-The attribute value will be escaped by default. Use == if you want to disable escaping in the attribute.
+属性値はデフォルトでエスケープされます。属性のエスケープを無効にしたい場合 == を使います。
 
     a href==action_path(:start)
 
-You can also break ruby attributes with backslash `\` or trailing `,` as describe for control sections.
+Ruby コードの属性は, コントロールセクションにあるようにバックスラッシュ `\` や `,` を用いて改行できます。
 
-#### Boolean attributes
+#### 真偽値属性
 
-The attribute values `true`, `false` and `nil` are interpreted
-as booleans. If you use the attribut wrapper you can omit the attribute assigment
+属性値の `true`, `false` や `nil` は真偽値として
+評価されます。属性を括弧で囲む場合, 属性値の指定を省略することができます。
 
     input type="text" disabled="disabled"
     input type="text" disabled=true
@@ -401,114 +401,114 @@ as booleans. If you use the attribut wrapper you can omit the attribute assigmen
     input type="text" disabled=false
     input type="text" disabled=nil
 
-#### Attribute merging
+#### 属性の結合
 
-You can configure attributes to be merged if multiple are given (See option `:merge_attrs`). In the default configuration
-this is done for class attributes with the white space as delimiter.
+複数の属性が与えられた場合に属性をまとめるように設定することができます (`:merge_attrs` 参照)。デフォルト設定では
+ class 属性は空白区切りで結合されます。
 
     a.menu class="highlight" href="http://slim-lang.com/" Slim-lang.com
 
-This renders as
+レンダリング結果
 
     <a class="menu highlight" href="http://slim-lang.com/">Slim-lang.com</a>
 
-You can also use an `Array` as attribute value and the array elements will be merged using the delimiter.
+また, `Array` や配列要素を属性値として区切り文字で結合し使うこともできます。
 
     a class=["menu","highlight"]
     a class=:menu,:highlight
 
-#### Splat attributes `*`
+#### アスタリスク属性 `*`
 
-The splat shortcut allows you turn a hash in to attribute/value pairs
+アスタリスクによってハッシュを属性/値のペアとして使うことができます。
 
     .card*{'data-url'=>place_path(place), 'data-id'=>place.id} = place.name
 
-renders as
+レンダリング結果
 
-    <div class="card" data-id="1234" data-url="/place/1234">Slim's house</div>
+    <div class="card" data-id="1234" data-url="/place/1234">Slim の家</div>
 
-You can also use methods or instance variables which return a hash as shown here:
+次のようにハッシュを返すメソッドやインスタンス変数を使うこともできます"
 
     .card *method_which_returns_hash = place.name
     .card *@hash_instance_variable = place.name
 
-The hash attributes which support attribute merging (see Slim option `:merge_attrs`) can be given as an `Array`
+属性の結合 (Slim オプション `:merge_attrs` 参照) に対応するハッシュ属性には `Array` を与えることもできます。
 
-    .first *{:class => [:second, :third]} Text
+    .first *{:class => [:second, :third]} テキスト
 
-renders as
+レンダリング結果
 
     div class="first second third"
 
-#### Dynamic tags `*`
+#### 動的タグ `*`
 
-You can create completely dynamic tags using the splat attributes. Just create a method which returns a hash
-with the :tag key.
+アスタリスク属性を使用することで完全に動的なタグを作ることができます。:tag をキーにもつハッシュを返すメソッドを
+作るだけです。
 
     ruby:
       def a_unless_current
         @page_current ? {:tag => 'span'} : {:tag => 'a', :href => 'http://slim-lang.com/'}
       end
     - @page_current = true
-    *a_unless_current Link
+    *a_unless_current リンク
     - @page_current = false
-    *a_unless_current Link
+    *a_unless_current リンク
 
-renders as
+レンダリング結果
 
-    <span>Link</span><a href="http://slim-lang.com/">Link</a>
+    <span>リンク</span><a href="http://slim-lang.com/">リンク</a>
 
-### Shortcuts
+### ショートカット
 
-#### Tag shortcuts
+#### タグショートカット
 
-You can define custom tag shortcuts by setting the option `:shortcut`.
+`:shortcut` オプションを設定することで独自のタグショートカットを定義できます。
 
     Slim::Engine.set_default_options :shortcut => {'c' => {:tag => 'container'}, '#' => {:attr => 'id'}, '.' => {:attr => 'class'} }
 
-We can use it in Slim code like this
+Slim コードの中でこの様に使用できます。
 
-    c.content Text
+    c.content テキスト
 
-which renders to
+レンダリング結果
 
-    <container class="content">Text</container>
+    <container class="content">テキスト</container>
 
-#### Attribute shortcuts
+#### 属性のショートカット
 
-You can define custom shortcuts (Similar to `#` for id and `.` for class).
+カスタムショートカットを定義することができます (`#` が id で `.` が class であるように)。
 
-In this example we add `&` to create a shortcut for the input elements with type attribute.
+例として `&` で作った type 属性付きの input 要素のショートカットを作成し追加します。
 
     Slim::Engine.set_default_options :shortcut => {'&' => {:tag => 'input', :attr => 'type'}, '#' => {:attr => 'id'}, '.' => {:attr => 'class'}}
 
-We can use it in Slim code like this
+Slim コードの中でこの様に使用できます。
 
     &text name="user"
     &password name="pw"
     &submit
 
-which renders to
+レンダリング結果
 
     <input type="text" name="user" />
     <input type="password" name="pw" />
     <input type="submit" />
 
-In another example we add `@` to create a shortcut for the role attribute.
+別の例として `@` で作った role 属性のショートカットを作成し追加します。
 
-    Slim::Engine.set_default_options :shortcut => {'@' => {:attr => 'role'}, '#' => {:attr => 'id'}, '.' => {:attr => 'class'}}
+    Slim::Engine.set_default_options :shortcut => {'@' => 'role', '#' => 'id', '.' => 'class'}
 
-We can use it in Slim code like this
+Slim コードの中でこの様に使用できます。
 
     .person@admin = person.name
 
-which renders to
+レンダリング結果
 
     <div class="person" role="admin">Daniel</div>
 
-#### ID shortcut `#` and class shortcut `.`
+#### ID ショートカット `#` と class ショートカット `.`
 
-Similarly to Haml, you can specify the `id` and `class` attributes in the following shortcut form
+Haml と同じように, `id` と `class` の属性を次のショートカットで指定できます。
 
     body
       h1#headline
@@ -518,7 +518,7 @@ Similarly to Haml, you can specify the `id` and `class` attributes in the follow
       .content
         = show_content
 
-This is the same as
+これは次に同じです
 
     body
       h1 id="headline"
@@ -528,231 +528,231 @@ This is the same as
       div class="content"
         = show_content
 
-## Text interpolation
+## テキストの展開
 
-Use standard Ruby interpolation. The text will be html escaped by default.
-
-    body
-      h1 Welcome #{current_user.name} to the show.
-      | Unescaped #{{content}} is also possible.
-
-To escape the interpolation (i.e. render as is)
+Ruby の標準的な展開方法を使用します。テキストはデフォルトで html エスケープされます。
 
     body
-      h1 Welcome \#{current_user.name} to the show.
+      h1 ようこそ #{current_user.name} ショーへ。
+      | エスケープしない #{{content}} こともできます。
 
-## Embedded engines (Markdown, ...)
+展開したテキストのエスケープ方法 (言い換えればそのままのレンダリング)
 
-Thanks to [Tilt](https://github.com/rtomayko/tilt), Slim has impressive support for embedding other template engines.
+    body
+      h1 ようこそ \#{current_user.name} ショーへ。
 
-Examples:
+## 埋め込みエンジン (Markdown, ...)
+
+ありがとう [Tilt](https://github.com/rtomayko/tilt), Slim は他のテンプレートエンジンの埋め込みに見事に対応します。
+
+例:
 
     coffee:
       square = (x) -> x * x
 
     markdown:
       #Header
-        Hello from #{"Markdown!"}
-        Second Line!
+        #{"Markdown"} からこんにちわ!
+        2行目!
 
-Supported engines:
+対応エンジン:
 
 <table>
-<thead style="font-weight:bold"><tr><td>Filter</td><td>Required gems</td><td>Type</td><td>Description</td></tr></thead>
+<thead style="font-weight:bold"><tr><td>フィルタ</td><td>必要な gem</td><td>種類</td><td>説明</td></tr></thead>
 <tbody>
-<tr><td>ruby:</td><td>none</td><td>Shortcut</td><td>Shortcut to embed ruby code</td></tr>
-<tr><td>javascript:</td><td>none</td><td>Shortcut</td><td>Shortcut to embed javascript code and wrap in script tag</td></tr>
-<tr><td>css:</td><td>none</td><td>Shortcut</td><td>Shortcut to embed css code and wrap in style tag</td></tr>
-<tr><td>sass:</td><td>sass</td><td>Compile time</td><td>Embed sass code and wrap in style tag</td></tr>
-<tr><td>scss:</td><td>sass</td><td>Compile time</td><td>Embedd scss code and wrap in style tag</td></tr>
-<tr><td>less:</td><td>less</td><td>Compile time</td><td>Embed less css code and wrap in style tag</td></tr>
-<tr><td>styl:</td><td>styl</td><td>Compile time</td><td>Embed stylus css code and wrap in style tag</td></tr>
-<tr><td>coffee:</td><td>coffee-script</td><td>Compile time</td><td>Compile coffee script code and wrap in script tag</td></tr>
-<tr><td>markdown:</td><td>redcarpet/rdiscount/kramdown</td><td>Compile time + Interpolation</td><td>Compile markdown code and interpolate #\{variables} in text</td></tr>
-<tr><td>textile:</td><td>redcloth</td><td>Compile time + Interpolation</td><td>Compile textile code and interpolate #\{variables} in text</td></tr>
-<tr><td>creole:</td><td>creole</td><td>Compile time + Interpolation</td><td>Compile creole code and interpolate #\{variables} in text</td></tr>
-<tr><td>wiki:, mediawiki:</td><td>wikicloth</td><td>Compile time + Interpolation</td><td>Compile wiki code and interpolate #\{variables} in text</td></tr>
-<tr><td>rdoc:</td><td>rdoc</td><td>Compile time + Interpolation</td><td>Compile rdoc code and interpolate #\{variables} in text</td></tr>
-<tr><td>builder:</td><td>builder</td><td>Precompiled</td><td>Embed builder code</td></tr>
-<tr><td>nokogiri:</td><td>nokogiri</td><td>Precompiled</td><td>Embed nokogiri builder code</td></tr>
-<tr><td>erb:</td><td>none</td><td>Precompiled</td><td>Embed erb code</td></tr>
+<tr><td>ruby:</td><td>なし</td><td>ショートカット</td><td>Ruby コードを埋め込むショートカット</td></tr>
+<tr><td>javascript:</td><td>なし</td><td>ショートカット</td><td> javascript コードを埋め込むショートカットで script タグで囲む</td></tr>
+<tr><td>css:</td><td>なし</td><td>ショートカット</td><td> css コードを埋め込むショートカットで style タグで囲む</td></tr>
+<tr><td>sass:</td><td>sass</td><td>コンパイル</td><td> sass コードを埋め込むショートカットで style タグで囲む</td></tr>
+<tr><td>scss:</td><td>sass</td><td>コンパイル</td><td> scss コードを埋め込むショートカットで style タグで囲む</td></tr>
+<tr><td>less:</td><td>less</td><td>コンパイル</td><td> less コードを埋め込むショートカットで style タグで囲む</td></tr>
+<tr><td>styl:</td><td>styl</td><td>コンパイル</td><td> stylus コードを埋め込むショートカットで style タグで囲む</td></tr>
+<tr><td>coffee:</td><td>coffee-script</td><td>コンパイル</td><td>コンパイルした CoffeeScript で script タグで囲む</td></tr>
+<tr><td>markdown:</td><td>redcarpet/rdiscount/kramdown</td><td>コンパイル + 展開</td><td>Markdownのコンパイルとテキスト中の #\{variables} の展開</td></tr>
+<tr><td>textile:</td><td>redcloth</td><td>コンパイル + 展開</td><td>textile のコンパイルとテキスト中の #\{variables} の展開</td></tr>
+<tr><td>creole:</td><td>creole</td><td>コンパイル + 展開</td><td>cleole のコンパイルとテキスト中の #\{variables} の展開</td></tr>
+<tr><td>wiki:, mediawiki:</td><td>wikicloth</td><td>コンパイル + 展開</td><td>wiki のコンパイルとテキスト中の #\{variables} の展開</td></tr>
+<tr><td>rdoc:</td><td>rdoc</td><td>コンパイル + 展開</td><td>RDoc のコンパイルとテキスト中の #\{variables} の展開</td></tr>
+<tr><td>builder:</td><td>builder</td><td>プレコンパイル</td><td>builder コードの埋め込み</td></tr>
+<tr><td>nokogiri:</td><td>nokogiri</td><td>プレコンパイル</td><td>nokogiri コードの埋め込み</td></tr>
+<tr><td>erb:</td><td>なし</td><td>プレコンパイル</td><td>erb コードの埋め込み</td></tr>
 </tbody>
 </table>
 
-The embedded engines can be configured in Slim by setting the options directly on the `Slim::Embedded` filter. Example:
+埋め込みエンジンは Slim の `Slim::Embedded` フィルタのオプションで直接設定されます。例:
 
     Slim::Embedded.default_options[:markdown] = {:auto_ids => false}
 
-## Configuring Slim
+## Slim の設定
 
-Slim and the underlying [Temple](https://github.com/judofyr/temple) framework are highly configurable.
-The way how you configure Slim depends a bit on the compilation mechanism (Rails or [Tilt](https://github.com/rtomayko/tilt)). It is always possible to set default options per `Slim::Engine` class. This can be done in Rails' environment files. For instance, in config/environments/development.rb you probably want:
+Slim とその基礎となる [Temple](https://github.com/judofyr/temple) は非常に柔軟に設定可能です。
+Slim を設定する方法はコンパイル機構に少し依存します。(Rails や [Tilt](https://github.com/rtomayko/tilt))。デフォルトオプションの設定は `Slim::Engine` クラスでいつでも可能です。Rails の 環境設定ファイルで設定可能です。例えば, config/environments/developers.rb で設定したいとします:
 
-### Default options
+### デフォルトオプション
 
-    # Indent html for pretty debugging and do not sort attributes (Ruby 1.8)
-    Slim::Engine.set_default_options :pretty => true, :sort_attrs => false
+    # デバック用に html をきれいにインデントし属性をソートしない (Ruby 1.8)
+    Slim::Engine.set_default_options :pretty => true. :sort_attrs => false
 
-    # Indent html for pretty debugging and do not sort attributes (Ruby 1.9)
+    # デバック用に html をきれいにインデントし属性をソートしない (Ruby 1.9)
     Slim::Engine.set_default_options pretty: true, sort_attrs: false
 
-You can also access the option hash directly:
+ハッシュで直接オプションにアクセスすることもできます:
 
     Slim::Engine.default_options[:pretty] = true
 
-### Setting options at runtime
+### 実行時のオプション設定
 
-There are two ways to set options at runtime. For Tilt templates (`Slim::Template`) you can set
-the options when you instatiate the template:
+実行時のオプション設定の方法は2つあります。Tilt テンプレート (`Slim::Template`) の場合, テンプレートを
+インスタンス化する時にオプションを設定できます。
 
     Slim::Template.new('template.slim', optional_option_hash).render(scope)
 
-The other possibility is to set the options per thread which is interesting mostly for Rails:
+他の方法は Rails に主に関係がありますがスレッド毎にオプション設定を行う方法です:
 
     Slim::Engine.with_options(option_hash) do
-       # Any Slim engines which are created here use the option_hash
-       # For example in Rails:
+       # ここで作成される Slim エンジンは option_hash を使用します
+       # Rails での使用例:
        render :page, :layout => true
     end
 
-You have to be aware that the compiled engine code and the options are cached per template in Rails and you cannot change the option afterwards.
+Rails ではコンパイルされたテンプレートエンジンのコードとオプションはテンプレート毎にキャッシュされ, 後でオプションを変更できないことに注意する必要があります。
 
-    # First render call
+    # 最初のレンダリング呼び出し
     Slim::Engine.with_options(:pretty => true) do
        render :page, :layout => true
     end
 
-    # Second render call
+    # 2回目のレンダリング呼び出し
     Slim::Engine.with_options(:pretty => false) do
        render :page, :layout => true # :pretty is still true because it is cached
     end
 
-### Available options
+### 可能なオプション
 
-The following options are exposed by the `Slim::Engine` and can be set with `Slim::Engine.set_default_options`.
-There are a lot of them but the good thing is, that Slim checks the configuration keys and reports an error if you try to use an invalid configuration key.
+次のオプションが `Slim::Engine` によって用意され `Slim::Engine.set_default_options` で設定することができます。
+沢山ありますが良いことに, Slim はもし誤った設定キーを使用しようとした場合キーをチェックしエラーを報告します。
 
 <table>
-<thead style="font-weight:bold"><tr><td>Type</td><td>Name</td><td>Default</td><td>Purpose</td></tr></thead>
+<thead style="font-weight:bold"><tr><td>種類</td><td>名前</td><td>デフォルト</td><td>用途</td></tr></thead>
 <tbody>
-<tr><td>String</td><td>:file</td><td>nil</td><td>Name of parsed file, set automatically by Slim::Template</td></tr>
-<tr><td>Integer</td><td>:tabsize</td><td>4</td><td>Number of white spaces per tab (used by the parser)</td></tr>
-<tr><td>String</td><td>:encoding</td><td>"utf-8"</td><td>Set encoding of template</td></tr>
-<tr><td>String</td><td>:default_tag</td><td>"div"</td><td>Default tag to be used if tag name is omitted</td></tr>
-<tr><td>Hash</td><td>:shortcut</td><td>\{'.' => {:attr => 'class'}, '#' => {:attr => 'id'}}</td><td>Attribute shortcuts</td></tr>
-<tr><td>Array&lt;Symbol,String&gt;</td><td>:enable_engines</td><td>nil <i>(All enabled)</i></td><td>List of enabled embedded engines (whitelist)</td></tr>
-<tr><td>Array&lt;Symbol,String&gt;</td><td>:disable_engines</td><td>nil <i>(None disabled)</i></td><td>List of disabled embedded engines (blacklist)</td></tr>
-<tr><td>Boolean</td><td>:disable_capture</td><td>false (true in Rails)</td><td>Disable capturing in blocks (blocks write to the default buffer </td></tr>
-<tr><td>Boolean</td><td>:disable_escape</td><td>false</td><td>Disable automatic escaping of strings</td></tr>
-<tr><td>Boolean</td><td>:use_html_safe</td><td>false (true in Rails)</td><td>Use String#html_safe? from ActiveSupport (Works together with :disable_escape)</td></tr>
-<tr><td>Symbol</td><td>:format</td><td>:xhtml</td><td>HTML output format (Possible formats :xhtml, :html4, :html5, :html)</td></tr>
-<tr><td>String</td><td>:attr_quote</td><td>'"'</td><td>Character to wrap attributes in html (can be ' or ")</td></tr>
-<tr><td>Hash</td><td>:merge_attrs</td><td>\{'class' => ' '}</td><td>Joining character used if multiple html attributes are supplied (e.g. class="class1 class2")</td></tr>
-<tr><td>Array&lt;String&gt;</td><td>:hyphen_attrs</td><td>%w(data)</td><td>Attributes which will be hyphenated if a Hash is given (e.g. data={a:1,b:2} will render as data-a="1" data-b="2")</td></tr>
-<tr><td>Boolean</td><td>:sort_attrs</td><td>true</td><td>Sort attributes by name</td></tr>
-<tr><td>Boolean</td><td>:pretty</td><td>false</td><td>Pretty html indenting <b>(This is slower!)</b></td></tr>
-<tr><td>String</td><td>:indent</td><td>'  '</td><td>Indentation string</td></tr>
-<tr><td>Boolean</td><td>:streaming</td><td>false (true in Rails > 3.1)</td><td>Enable output streaming</td></tr>
-<tr><td>Class</td><td>:generator</td><td>Temple::Generators::ArrayBuffer/RailsOutputBuffer</td><td>Temple code generator (default generator generates array buffer)</td></tr>
-<tr><td>String</td><td>:buffer</td><td>'_buf' ('@output_buffer' in Rails)</td><td>Variable used for buffer</td></tr>
+<tr><td>文字列</td><td>:file</td><td>nil</td><td>解析対象のファイル名ですが, Slim::Template によって自動的に設定されます</td></tr>
+<tr><td>数値</td><td>:tabsize</td><td>4</td><td>1 タブあたりのスペース数 (構文解析で利用されます)</td></tr>
+<tr><td>文字列</td><td>:encoding</td><td>"utf-8"</td><td>テンプレートのエンコーディングを設定</td></tr>
+<tr><td>文字列</td><td>:default_tag</td><td>"div"</td><td>タグ名が省略されている場合デフォルトのタグとして使用される</td></tr>
+<tr><td>ハッシュ</td><td>:shortcut</td><td>\{'.' => {:attr => 'class'}, '#' => {:attr => 'id'}}</td><td>属性のショートカット</td></tr>
+<tr><td>配列&lt;シンボル,文字列&gt;</td><td>:enable_engines</td><td>nil <i>(すべて可)</i></td><td>有効な埋め込みエンジンリスト (ホワイトリスト)</td></tr>
+<tr><td>配列&lt;シンボル,文字列&gt;</td><td>:disable_engines</td><td>nil <i>(無効なし)</i></td><td>無効な埋め込みエンジンリスト (ブラックリスト)</td></tr>
+<tr><td>真偽値</td><td>:disable_capture</td><td>false (Rails では true)</td><td>ブロック内キャプチャ無効 (ブロックはデフォルトのバッファに書き込む)</td></tr>
+<tr><td>真偽値</td><td>:disable_escape</td><td>false</td><td>文字列の自動エスケープ無効</td></tr>
+<tr><td>真偽値</td><td>:use_html_safe</td><td>false (Rails では true)</td><td>ActiveSupport の String#html_safe? を使う (:disable_escape と一緒に機能する)</td></tr>
+<tr><td>シンボル</td><td>:format</td><td>:xhtml</td><td>html の出力フォーマット (対応フォーマット :xhtml, :html4, :html5, :html)</td></tr>
+<tr><td>文字列</td><td>:attr_quote</td><td>'"'</td><td>html の属性を囲む文字 (' または " が可能)</td></tr>
+<tr><td>ハッシュ</td><td>:merge_attrs</td><td>\{'class' => ' '}</td><td>複数の html 属性が与えられた場合結合に使われる文字列 (例: class="class1 class2")</td></tr>
+<tr><td>配列&lt;文字列&gt;</td><td>:hyphen_attrs</td><td>%w(data)</td><td>属性にハッシュが与えられた場合ハイフンつなぎされます。(例: data={a:1,b:2} は data-a="1" data-b="2" のように)</td></tr>
+<tr><td>真偽値</td><td>:sort_attrs</td><td>true</td><td>名前によって属性をソート</td></tr>
+<tr><td>真偽値</td><td>:pretty</td><td>false</td><td>綺麗な html インデント<b>(遅くなります!)</b></td></tr>
+<tr><td>文字列</td><td>:indent</td><td>'  '</td><td>インデントに使用される文字列</td></tr>
+<tr><td>真偽値</td><td>:streaming</td><td>false (Rails > 3.1 では true)</td><td>ストリーミング出力の有効化</td></tr>
+<tr><td>クラス</td><td>:generator</td><td>Temple::Generators::ArrayBuffer/RailsOutputBuffer</td><td>Temple コードジェネレータ (デフォルトのジェネレータは配列バッファを生成します)</td></tr>
+<tr><td>文字列</td><td>:buffer</td><td>'_buf' (Rails では '@output_buffer')</td><td>バッファに使用される変数</td></tr>
 </tbody>
 </table>
 
-There are more options which are supported by the Temple filters but which are not exposed and are not officially supported. You
-have to take a look at the Slim and Temple code for that.
+Temple フィルタによってもっと多くのオプションがサポートされていますが一覧には載せず公式にはサポートしません。
+Slim と Temple のコードを確認しなければなりません。
 
-### Option priority and inheritance
+### オプションの優先順位と継承
 
-For developers who know more about Slim and Temple architecture it is possible to override default
-options at different positions. Temple uses an inheritance mechanism to allow subclasses to override
-options of the superclass. The option priorities are as follows:
+Slim や Temple のアーキテクチャについてよく知っている開発者は異なる場所で設定を
+上書きすることができます。 Temple はサブクラスがスーパークラスのオプションを上書きできるように
+継承メカニズムを採用しています。オプションの優先順位は次のとおりです:
 
-1. `Slim::Template` options passed at engine instatination
+1. `Slim::Template` オプションはエンジン初期化時に適用されます
 2. `Slim::Template.default_options`
 3. `Slim::Engine.thread_options`, `Slim::Engine.default_options`
-5. Parser/Filter/Generator `thread_options`, `default_options` (e.g `Slim::Parser`, `Slim::Compiler`)
+5. パーサ/フィルタ/ジェネレータ `thread_options`, `default_options` (例: `Slim::Parser`, `Slim::Compiler`)
 
-It is also possible to set options for superclasses like `Temple::Engine`. But this will affect all temple template engines then.
+`Temple::Engine` のようにスーパークラスのオプションを設定することも可能です。しかしこれはすべての Temple テンプレートエンジンに影響します。
 
     Slim::Engine < Temple::Engine
     Slim::Compiler < Temple::Filter
 
-## Plugins
+## プラグイン
 
-### Logic less mode
+### ロジックレスモード
 
-<a name="logicless">Logic less mode</a> is inspired by [Mustache](https://github.com/defunkt/mustache). Logic less mode uses a dictionary object
-e.g. a recursive hash tree which contains the dynamic content.
+<a name="logicless">ロジックレスモード</a>は [Mustache](https://github.com/defunkt/mustache) に影響されています。ロジックレスモードは辞書オブジェクトを使います。
+例えば動的コンテンツを含んだハッシュツリーです。
 
-#### Conditional
+#### 条件
 
-If the object is not false or empty?, the content will show
+オブジェクトが false または empty? ではない場合, コンテンツは表示されます。
 
     - article
       h1 = title
 
-#### Inverted conditional
+#### 反対条件
 
-If the object is false or empty?, the content will show
+オブジェクトが false または empty? の場合, コンテンツは表示されます。
 
     -! article
       p Sorry, article not found
 
-#### Iteration
+#### 繰り返し
 
-If the object is an array, the section will iterate
+オブジェクトが配列の場合, このセクションは繰り返されます。
 
     - articles
       tr: td = title
 
-#### Lambdas
+#### ラムダ
 
-Like mustache, Slim supports lambdas.
+mustache のように Slim はラムダに対応します
 
     = person
       = name
 
-The lambda method could be defined like this
+ラムダ式はこのように定義できるでしょう
 
     def lambda_method
       "<div class='person'>#{yield(:name => 'Andrew')}</div>"
     end
 
-You can optionally pass one or more hashes to `yield`. If you pass multiple hashes, the block will be iterated as described above.
+`yield` に1つ以上のハッシュを与えることができます。複数のハッシュを与えた場合, 上記のようにブロックは繰り返されます。
 
-#### Dictionary access
+#### 辞書オブジェクトの利用
 
-Example code:
+コード例:
 
     - article
       h1 = title
 
-The dictionary object is accessed in the order given by the `:dictionary_access`. Default order:
+辞書オブジェクトは `:dictionary_access` に与えられた順に利用するできます。デフォルト順: 
 
-1. `:symbol` - If `article.respond_to?(:has_key?)` and `article.has_key?(:title)`, Slim will execute `article[:title]`
-2. `:string` - If `article.respond_to?(:has_key?)` and `article.has_key?('title')`, Slim will execute `article['title']`
-3. `:method` - If `article.respond_to?(:title)`, Slim will execute `article.send(:title)`
-4. `:instance_variable` - If `article.instance_variable_defined?(@title)`, Slim will execute `article.instance_variable_get @title`
+1. `:symbol` - `article.respond_to?(:has_key?)` かつ `article.has_key?(:title)` の場合, Slim は `article[:title]` を実行
+2. `:string` - `article.respond_to?(:has_key?)` かつ `article.has_key?('title')` の場合, Slim は `article['title']` を実行
+3. `:method` - `article.respond_to?(:title)` の場合, Slim は `article.send(:title)` を実行
+4. `:instance_variable` - `article.instance_variable_defined?(@title)` の場合, Slim は `article.instance_variable_get @title` を実行
 
-If all the above fails, Slim will try to resolve the title reference in the same order against the parent object. In this example, the parent would be the dictionary object you are rendering the template against.
+上記すべてに失敗した場合, Slim は親オブジェクトに対して同じ順序で title の参照を解決しようとします。例では親オブジェクトはテンプレートに対してレンダリングしている辞書オブジェクトでしょう。
 
-As you might have guessed, the article reference goes through the same steps against the dictionary. Instance variables are not allowed in the view code, but Slim will find and use them. Essentially, you're just using dropping the @ prefix in your template. Parameterized method calls are not allowed.
+ご想像の通り, article の参照は辞書オブジェクトに対して同じステップを実行します。インスタンス変数はビューのコード内では使用できませんが, Slim はインスタンス変数を探しだして使います。実際の所, テンプレートに @ プレフィックスをつけて使います。引数付きメソッドは使用できません。
 
-#### Logic less in Rails
+#### Rails でロジックレス
 
-Install:
+インストール:
 
     $ gem install slim
 
-Require:
+読み込み:
 
     gem 'slim', :require => 'slim/logic_less'
 
-You might want to activate logic less mode only for a few actions, you should disable logic-less mode globally at first in the configuration
+いくつかのアクションに対してのみロジックレスモードを有効化したい場合には, 設定で最初にグローバルにロジックレスモードを無効化する必要があります。
 
     Slim::Engine.set_default_options :logic_less => false
 
-and activate logic less mode per render call in your action
+そしてアクションの中でレンダリング毎にロジックレスモードを有効化します。
 
     class Controller
       def action
@@ -762,78 +762,78 @@ and activate logic less mode per render call in your action
       end
     end
 
-#### Logic less in Sinatra
+#### Sinatra でロジックレス
 
-Sinata has built-in support for Slim. All you have to do is require the logic less Slim plugin. This can be done in your config.ru:
+Sinatra は Slim をビルトインサポートしています。ロジックレスの Slim プラグインを読み込むだけです。config.ru で読み込むことができます:
 
     require 'slim/logic_less'
 
-You are then ready to rock!
+rock する準備が整いました!
 
-You might want to activate logic less mode only for a few actions, you should disable logic-less mode globally at first in the configuration
+いくつかのアクションに対してのみロジックレスモードを有効化したい場合には, 設定で最初にグローバルにロジックレスモードを無効化する必要があります。
 
     Slim::Engine.set_default_options :logic_less => false
 
-and activate logic less mode per render call in your application
+そしてアプリケーションの中でレンダリング毎にロジックレスモードを有効化します。
 
     get '/page'
       slim :page, :logic_less => true
     end
 
-#### Options
+#### オプション
 
 <table>
-<thead style="font-weight:bold"><tr><td>Type</td><td>Name</td><td>Default</td><td>Purpose</td></tr></thead>
+<thead style="font-weight:bold"><tr><td>種類</td><td>名前</td><td>デフォルト</td><td>用途</td></tr></thead>
 <tbody>
-<tr><td>Boolean</td><td>:logic_less</td><td>true</td><td>Enable logic less mode (Enabled if 'slim/logic_less' is required)</td></tr>
-<tr><td>String</td><td>:dictionary</td><td>"self"</td><td>Dictionary where variables are looked up</td></tr>
-<tr><td>Symbol/Array&lt;Symbol&gt;</td><td>:dictionary_access</td><td>[:symbol, :string, :method, :instance_variable]</td><td>Dictionary access order (:symbol, :string, :method, :instance_variable)</td></tr>
+<tr><td>真偽値</td><td>:logic_less</td><td>true</td><td>ロジックレスモードの有効化 ('slim/logic_less' が読み込まれた場合有効化)</td></tr>
+<tr><td>文字列</td><td>:dictionary</td><td>"self"</td><td>変数が検索される辞書</td></tr>
+<tr><td>シンボル/配列&lt;シンボル&gt;</td><td>:dictionary_access</td><td>[:symbol, :string, :method, :instance_variable]</td><td>辞書オブジェクトの実行順 (:symbol, :string, :method, :instance_variable)</td></tr>
 </tbody>
 </table>
 
-### Translator/I18n
+### 多言語化/I18n
 
-The translator plugin provides automatic translation of the templates using Gettext, Fast-Gettext or Rails I18n. Static text
-in the template is replaced by the translated version.
+多言語化プラグインは Gettext, Fast-Gettext または Rails の i18n を使用してテンプレートの自動翻訳を提供します。
+静的なテキストが翻訳されたバージョンに置き換えられます。
 
-Example:
+例:
 
-    h1 Welcome to #{url}!
+    h1 Welcom to #{url}!
 
-Gettext translates the string from english to german where interpolations are replaced by %1, %2, ...
+Gettext 書込みが %1, %2, ... によって書き換えられることで文字列を英語からドイツ語に翻訳します。
 
     "Welcome to %1!" -> "Willkommen auf %1!"
 
-and renders as
+レンダリング結果
 
     <h1>Willkommen auf slim-lang.com!</h1>
 
-Enable the translator plugin with
+多言語化プラグインは次のように有効化します
 
     require 'slim/translator'
 
-#### Options
+#### オプション
 
 <table>
-<thead style="font-weight:bold"><tr><td>Type</td><td>Name</td><td>Default</td><td>Purpose</td></tr></thead>
+<thead style="font-weight:bold"><tr><td>種類</td><td>名前</td><td>名前</td><td>用途</td></tr></thead>
 <tbody>
-<tr><td>Boolean</td><td>:tr</td><td>true</td><td>Enable translator (Enabled if 'slim/translator' is required)</td></tr>
-<tr><td>Symbol</td><td>:tr_mode</td><td>:dynamic</td><td>When to translate: :static = at compile time, :dynamic = at runtime</td></tr>
-<tr><td>String</td><td>:tr_fn</td><td>Depending on installed translation library</td><td>Translation function, could be '_' for gettext</td></tr>
+<tr><td>真偽値</td><td>:tr</td><td>true</td><td>多言語化の有効化 ('slim/translator' が読み込まれると有効化)</td></tr>
+<tr><td>シンボル</td><td>:tr_mode</td><td>:dynamic</td><td>多言語化するタイミング: :static = コンパイル時, :dynamic = 実行時</td></tr>
+<tr><td>文字列</td><td>:tr_fn</td><td>インストールした多言語化ライブラリに依存</td><td>多言語化関数は gettext の場合 `_`</td></tr>
 </tbody>
 </table>
 
-## Framework support
+## フレームワークサポート
 
 ### Tilt
 
-Slim uses [Tilt](https://github.com/rtomayko/tilt) to compile the generated code. If you want to use the Slim template directly, you can use the Tilt interface.
+Slim は生成されたコードをコンパイルするために [Tilt](https://github.com/rtomayko/tilt) を使用します。Slim テンプレートを直接使いたい場合, Tilt インターフェイスが使用できます。
 
     Tilt.new['template.slim'].render(scope)
     Slim::Template.new('template.slim', optional_option_hash).render(scope)
     Slim::Template.new(optional_option_hash) { source }.render(scope)
 
-The optional option hash can have to options which were documented in the section above.
+optional_option_hash は前述のオプションを持つことができます。
 
 ### Sinatra
 
@@ -847,26 +847,26 @@ get('/') { slim :index }
 doctype html
 html
   head
-    title Sinatra With Slim
+    title Slim で Sinatra
   body
-    h1 Slim Is Fun!
+    h1 Slim は楽しい!
 </pre>
 
 ### Rails
 
-Rails generators are provided by [slim-rails](https://github.com/slim-template/slim-rails). slim-rails
-is not necessary to use Slim in Rails though. Just install Slim and add it to your Gemfile with `gem 'slim'`.
-Then just use the .slim extension and you're good to go.
+Rails のジェネレータは [slim-rails](https://github.com/slim-template/slim-rails) によって提供されます。
+slim-rails は Rails で Slim を使用する場合に必須ではありません。Slim をインストールし Gemfile に `gem 'slim'` を追加するだけです。
+後は .slim 拡張子を使えば Rails で使用できます。
 
 #### Streaming
 
-HTTP streaming is enabled by default if you use a Rails version which supports it.
+HTTP ストリーミングは Rails がそれをサポートしているバージョンであればデフォルトで有効化されています。
 
-## Tools
+## ツール
 
-### Slim Command 'slimrb'
+### Slim コマンド 'slimrb'
 
-The gem 'slim' comes with the small tool 'slimrb' to test Slim from the command line.
+gem の 'slim' にはコマンドラインから Slim をテストするための小さなツール 'slimrb' が付属します。
 
 <pre>
 $ slimrb --help
@@ -883,34 +883,34 @@ Usage: slimrb [options]
     -v, --version                    Print version
 </pre>
 
-Start 'slimrb', type your code and press Ctrl-d to send EOF. Example usage:
+'slimrb' で起動し, コードをタイプし Ctrl-d で EOF を送ります。使い方例: 
 
 <pre>
 $ slimrb
 markdown:
-  First paragraph.
+  最初の段落。
 
-  Second paragraph.
+  2つ目の段落。
 
-  * one
-  * two
-  * three
+  * 1つ
+  * 2つ
+  * 3つ
 
 //Enter Ctrl-d
-&lt;p&gt;First paragraph &lt;/p&gt;
+&lt;p&gt;最初の段落。 &lt;/p&gt;
 
-&lt;p&gt;Second paragraph &lt;/p&gt;
+&lt;p&gt;2つめの段落。 &lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;one&lt;/li&gt;
-&lt;li&gt;two&lt;/li&gt;
-&lt;li&gt;three&lt;/li&gt;
+&lt;li&gt;1つ&lt;/li&gt;
+&lt;li&gt;2つ&lt;/li&gt;
+&lt;li&gt;3つ&lt;/li&gt;
 &lt;/ul&gt;
 </pre>
 
-### Syntax Highlighters
+### 構文ハイライト
 
-There are plugins for various text editors (including the most important ones - Vim, Emacs and Textmate):
+様々なテキストエディタのためのプラグインがあります。(最も重要なものも含めて - Vim, Emacs や Textmate):
 
 * [Vim](https://github.com/slim-template/vim-slim)
 * [Emacs](https://github.com/slim-template/emacs-slim)
@@ -918,37 +918,37 @@ There are plugins for various text editors (including the most important ones - 
 * [Espresso text editor](https://github.com/slim-template/Slim-Sugar)
 * [Coda](https://github.com/slim-template/Coda-2-Slim.mode)
 
-### Template Converters (HAML, ERB, ...)
+### テンプレート変換 (HAML, ERB, ...)
 
 * [Haml2Slim converter](https://github.com/slim-template/haml2slim)
 * [HTML2Slim converter](https://github.com/slim-template/html2slim)
 
-## Testing
+## テスト
 
-### Benchmarks
+### ベンチマーク
 
-  *Yes, Slim is one of the fastest Ruby template engines out there!
-   In production mode Slim is nearly as fast as Erubis (which is the fastest template engine).
-   But we would be happy if you chose Slim also for any other reason, we assure
-   you performance will not be an obstacle.*
+  *そうです, Slim は最速の Ruby のテンプレートエンジンです!
+   production モードの Slim は Erubis (最速のテンプレートエンジン) と同じくらい高速です。
+   ありがたいことに何らかの理由であなたが Slim を選択した場合, 私たちは
+   パフォーマンスが障害にならないだろうことを保証します。*
 
-Run the benchmarks with `rake bench`. You can add the option `slow` to
-run the slow parsing benchmark which needs more time. You can also increase the number of iterations.
+ベンチマークは `rake bench` で実行します。時間が余計にかかりますが遅い解析ベンチマークを
+実行したい場合 `slow` オプションを追加できます。
 
     rake bench slow=1 iterations=1000
 
-We run the benchmarks for every commit on Travis-CI. Take a look at the newest benchmarking results: <http://travis-ci.org/#!/slim-template/slim>
+私たちはコミット毎に Travis-CI でベンチマークをとっています。最新のベンチマーク結果はリンク先を確認: <http://travis-ci.org/#!/slim-template/slim>
 
-### Test suite and continous integration
+### テストスイートと継続的インテグレーション
 
-Slim provides an extensive test-suite based on minitest. You can run the tests
-with 'rake test' and the rails integration tests with 'rake test:rails'.
+Slim は minitest ベースの拡張性のあるテストスイートを提供します。テストは 'rake test' または
+rails のインテグレーションテストの場合 'rake test:rails' で実行できます。
 
-We are currently experimenting with human-readable literate tests which are written as markdown files: {file:test/literate/TESTS.md TESTS.md}
+私たちは現在 markdown ファイルで書かれた人間が読めるテストを試しています: {ファイル:test/literate/TESTS.md TESTS.md}
 
-Travis-CI is used for continous integration testing: <http://travis-ci.org/#!/slim-template/slim>
+Travis-CI は継続的インテグレーションテストに利用されています: <http://travis-ci.org/#!/slim-template/slim>
 
-Slim is working well on all major Ruby implementations:
+Slim はすべての主要な Ruby 実装で動作します:
 
 * Ruby 1.8.7
 * Ruby 1.9.2
@@ -957,43 +957,43 @@ Slim is working well on all major Ruby implementations:
 * JRuby
 * Rubinius 2.0
 
-## Contributing
+## 貢献
 
-If you'd like to help improve Slim, clone the project with Git by running:
+Slim の改良を支援したい場合, Git で管理されているプロジェクトを clone してください。
 
     $ git clone git://github.com/slim-template/slim
 
-Work your magic and then submit a pull request. We love pull requests!
+魔法をかけた後 pull request を送ってください。私たちは pull request が大好きです！
 
-Please remember to test against Ruby versions 1.9.2 and 1.8.7.
+Ruby の 1.9.2 と 1.8.7 でテストをすることを覚えておいてください。
 
-If you find the documentation lacking (and you probably will), help us out and update this README.md. If you don't have the time to work on Slim, but found something we should know about, please submit an issue.
+もしドキュメントの不足を見つけたら (きっと見つけるでしょう), README.md をアップデートして私たちを助けて下さい。Slim に割く時間がないが, 私たちが知るべきものを何か見つけた場合には issue を送ってください。
 
 ## License
 
-Slim is released under the [MIT license](http://www.opensource.org/licenses/MIT).
+Slim は [MIT license](http://www.opensource.org/licenses/MIT) に基づいてリリースされています。
 
-## Authors
+## 作者
 
 * [Daniel Mendler](https://github.com/minad) (Lead developer)
 * [Andrew Stone](https://github.com/stonean)
 * [Fred Wu](https://github.com/fredwu)
 
-## Discuss
+## 議論
 
 * [Google Group](http://groups.google.com/group/slim-template)
 
-## Related projects
+## 関連プロジェクト
 
-Template compilation framework:
+テンプレートのコンパイルフレームワーク:
 
 * [Temple](https://github.com/judofyr/temple)
 
-Framework support:
+フレームワークサポート:
 
 * [Rails 3 generators (slim-rails)](https://github.com/slim-template/slim-rails)
 
-Syntax highlighting:
+構文ハイライト:
 
 * [Vim](https://github.com/slim-template/vim-slim)
 * [Emacs](https://github.com/slim-template/emacs-slim)
@@ -1001,12 +1001,12 @@ Syntax highlighting:
 * [Espresso text editor](https://github.com/slim-template/Slim-Sugar)
 * [Coda](https://github.com/slim-template/Coda-2-Slim.mode)
 
-Template Converters (HAML, ERB, ...):
+テンプレート変換 (HAML, ERB, ...):
 
 * [Haml2Slim converter](https://github.com/slim-template/haml2slim)
 * [HTML2Slim converter](https://github.com/slim-template/html2slim)
 
-Language ports/Similar languages:
+移植言語/同様の言語:
 
 * [Coffee script plugin for Slim](https://github.com/yury/coffee-views)
 * [Clojure port of Slim](https://github.com/chaslemley/slim.clj)
