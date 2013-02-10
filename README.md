@@ -650,6 +650,7 @@ Rails ではコンパイルされたテンプレートエンジンのコード�
 <tr><td>ハッシュ</td><td>:merge_attrs</td><td>\{'class' => ' '}</td><td>複数の html 属性が与えられた場合結合に使われる文字列 (例: class="class1 class2")</td></tr>
 <tr><td>配列&lt;文字列&gt;</td><td>:hyphen_attrs</td><td>%w(data)</td><td>属性にハッシュが与えられた場合ハイフンつなぎされます。(例: data={a:1,b:2} は data-a="1" data-b="2" のように)</td></tr>
 <tr><td>真偽値</td><td>:sort_attrs</td><td>true</td><td>名前によって属性をソート</td></tr>
+<tr><td>シンボル</td><td>:js_wrapper</td><td>nil</td><td>:comment, :cdata や :both で JavaScript をラップします。:guess を指定することで :format オプションに基いて設定することもできます。</td></tr>
 <tr><td>真偽値</td><td>:pretty</td><td>false</td><td>綺麗な html インデント<b>(遅くなります!)</b></td></tr>
 <tr><td>文字列</td><td>:indent</td><td>'  '</td><td>インデントに使用される文字列</td></tr>
 <tr><td>真偽値</td><td>:streaming</td><td>false (Rails > 3.1 では true)</td><td>ストリーミング出力の有効化</td></tr>
