@@ -573,6 +573,7 @@ Ruby の標準的な展開方法を使用します。テキストはデフォル
 <tr><td>less:</td><td>less</td><td>コンパイル</td><td> less コードを埋め込むショートカットで style タグで囲む</td></tr>
 <tr><td>styl:</td><td>styl</td><td>コンパイル</td><td> stylus コードを埋め込むショートカットで style タグで囲む</td></tr>
 <tr><td>coffee:</td><td>coffee-script</td><td>コンパイル</td><td>コンパイルした CoffeeScript で script タグで囲む</td></tr>
+<tr><td>asciidoc:</td><td>asciidoctor</td><td>コンパイル + 展開</td><td> AsciiDoc コードのコンパイルとテキスト中の #\{variables} の展開</td></tr>
 <tr><td>markdown:</td><td>redcarpet/rdiscount/kramdown</td><td>コンパイル + 展開</td><td>Markdownのコンパイルとテキスト中の #\{variables} の展開</td></tr>
 <tr><td>textile:</td><td>redcloth</td><td>コンパイル + 展開</td><td>textile のコンパイルとテキスト中の #\{variables} の展開</td></tr>
 <tr><td>creole:</td><td>creole</td><td>コンパイル + 展開</td><td>cleole のコンパイルとテキスト中の #\{variables} の展開</td></tr>
