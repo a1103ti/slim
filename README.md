@@ -42,7 +42,7 @@ Slim 2.0 は 1.3 シリーズから非推奨機能を取り除き構文のマイ
 
 ### Slim とは?
 
-Slim は Rails3 に対応した高速, 軽量なテンプレートエンジンです。すべての主要な Ruby の実装でしっかりテストされています。
+Slim は Rails3 および 4 に対応した高速, 軽量なテンプレートエンジンです。すべての主要な Ruby の実装でしっかりテストされています。
 私たちは継続的インテグレーションを採用しています。(travis-ci)
 
 Slim の核となる構文は1つの考えによって導かれます: "この動作を行うために最低限必要なものは何か"。
@@ -859,7 +859,7 @@ Slim は [MIT license](http://www.opensource.org/licenses/MIT) に基づいて�
 
 フレームワークサポート:
 
-* [Rails 3 generators (slim-rails)](https://github.com/slim-template/slim-rails)
+* [Rails generators (slim-rails)](https://github.com/slim-template/slim-rails)
 
 構文ハイライト:
 
