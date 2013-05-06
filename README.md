@@ -23,12 +23,21 @@ Slim は 不可解にならないように view の構文を本質的な部品�
 * Ruby 1.9 では タグや属性の Unicode に完全対応
 * Markdown や Textile のような埋め込みエンジン
 
-## Upgrade to version 2.0
+## リンク
+
+* ソース: <http://github.com/slim-template/slim>
+* バグ:   <http://github.com/slim-template/slim/issues>
+* リスト:   <http://groups.google.com/group/slim-template>
+* API ドキュメント:
+    * 最新の Gem: <http://rubydoc.info/gems/slim/frames>
+    * GitHub master: <http://rubydoc.info/github/slim-template/slim/master/frames>
+
+## 2.0 へのアップグレード
 
 __NOTE:__ Slim 2.0 はまだリリースされていませんが, preview バージョンを試すことができます。
 
-すでに Slim 1.3 や 1.2 を使用していて最新バージョンの 2.0 にアップグレードしたい場合, まず非推奨機能の
-エラーを出す Slim 1.3.7 にアップグレードするべきです。これはあなたのアプリケーションが Slim 2.0 に準拠
+すでに Slim 1.x を使用していて最新バージョンの 2.0 にアップグレードしたい場合, まず非推奨機能の
+エラーを出す Slim 1.3.8 にアップグレードするべきです。これはあなたのアプリケーションが Slim 2.0 に準拠
 しているか簡単に確認する方法です。
 
 Slim 2.0 は 1.3 シリーズから非推奨機能を取り除き構文のマイナーな矛盾を
@@ -97,7 +106,7 @@ Slim テンプレートがどのようなものか簡単な例を示します:
 
         - if items.any?
           table#items
-            - for item in items do
+            - for item in items
               tr
                 td.name = item.name
                 td.price = item.price
@@ -176,7 +185,7 @@ Slim テンプレートがどのようなものか簡単な例を示します:
 イコールはバッファに追加する出力を生成する Ruby 呼び出しを Slim に命令します。Ruby のコードが複数行にわたる場合, 例のように行末にバックスラッシュを追加します。
 
     = javascript_include_tag \
-       "jquery", \
+       "jquery",
        "application"
 
 行末がカンマ `,` で終わる場合 (例 関数呼び出し) には行末にバックスラッシュを追加する必要はありません。
@@ -382,7 +391,7 @@ HTML 4 ドキュメントタイプ
 
     body
       table
-        - for user in users do
+        - for user in users
           td id="user_#{user.id}" class=user.role
             a href=user_action(user, :edit) Edit #{user.name}
             a href=(path_to_user user) = user.name
@@ -532,6 +541,34 @@ Haml と同じように, `id` と `class` の属性を次のショートカッ�
         = page_tagline
       div class="content"
         = show_content
+
+## ヘルパとキャプチャ
+
+
+いくつかのヘルパを使用してテンプレートを拡張することもできます。次のヘルパが定義されていることを前提として,
+
+~~~ruby
+module Helpers
+  def headline
+    "<h1>#{yield}</h1>"
+  end
+end
+~~~
+
+次のように Slim の中で使用できます。
+
+   p
+     = headline do
+       ' Hello
+       = user.name
+
+`do` ブロック内のコンテンツが自動的にキャプチャされ `yield` を通してヘルパに渡されます。糖衣構文として
+`do` キーワードを省略して書くこともできます。
+
+   p
+     = headline
+       ' Hello
+       = user.name
 
 ## テキストの展開
 
@@ -789,7 +826,7 @@ markdown:
 ### テンプレート変換 (HAML, ERB, ...)
 
 * [Haml2Slim converter](https://github.com/slim-template/haml2slim)
-* [HTML2Slim converter](https://github.com/slim-template/html2slim)
+* [ERB2Slim, HTML2Slim converter](https://github.com/slim-template/html2slim)
 
 ## テスト
 
@@ -872,7 +909,7 @@ Slim は [MIT license](http://www.opensource.org/licenses/MIT) に基づいて�
 テンプレート変換 (HAML, ERB, ...):
 
 * [Haml2Slim converter](https://github.com/slim-template/haml2slim)
-* [HTML2Slim converter](https://github.com/slim-template/html2slim)
+* [ERB2Slim, HTML2Slim converter](https://github.com/slim-template/html2slim)
 
 移植言語/同様の言語:
 
@@ -881,5 +918,6 @@ Slim は [MIT license](http://www.opensource.org/licenses/MIT) に基づいて�
 * [Hamlet.rb (Similar template language)](https://github.com/gregwebs/hamlet.rb)
 * [Plim (Python port of Slim)](https://github.com/2nd/plim)
 * [Skim (Slim for Javascript)](https://github.com/jfirebaugh/skim)
+* [Emblem.js (Javascript, similar to Slim)](https://github.com/machty/emblem.js)
 * [Haml (Older engine which inspired Slim)](https://github.com/haml/haml)
 * [Jade (Similar engine for javascript)](https://github.com/visionmedia/jade)
