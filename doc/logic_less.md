@@ -130,11 +130,8 @@ rock する準備が整いました!
 
 #### オプション
 
-<table>
-<thead style="font-weight:bold"><tr><td>種類</td><td>名前</td><td>デフォルト</td><td>用途</td></tr></thead>
-<tbody>
-<tr><td>真偽値</td><td>:logic_less</td><td>true</td><td>ロジックレスモードの有効化 ('slim/logic_less' が読み込まれた場合有効化)</td></tr>
-<tr><td>文字列</td><td>:dictionary</td><td>"self"</td><td>変数が検索される辞書</td></tr>
-<tr><td>シンボル/配列&lt;シンボル&gt;</td><td>:dictionary_access</td><td>[:symbol, :string, :method, :instance_variable]</td><td>辞書オブジェクトの実行順 (:symbol, :string, :method, :instance_variable)</td></tr>
-</tbody>
-</table>
+| 種類 | 名前 | デフォルト | 用途 |
+| ---- | ---- | ------- | ------- |
+| 真偽値 | :logic_less | true | ロジックレスモードの有効化 ('slim/logic_less' が読み込まれた場合有効化) |
+| 文字列 | :dictionary | "self" | 変数が検索される辞書 |
+| シンボル/配列&lt;シンボル&gt; | :dictionary_access | [:symbol, :string, :method, :instance_variable] | 辞書オブジェクトの実行順 (:symbol, :string, :method, :instance_variable) |

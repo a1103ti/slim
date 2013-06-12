@@ -21,11 +21,8 @@ Gettext 書込みが %1, %2, ... によって書き換えられることで文�
 
 #### オプション
 
-<table>
-<thead style="font-weight:bold"><tr><td>種類</td><td>名前</td><td>名前</td><td>用途</td></tr></thead>
-<tbody>
-<tr><td>真偽値</td><td>:tr</td><td>true</td><td>多言語化の有効化 ('slim/translator' が読み込まれると有効化)</td></tr>
-<tr><td>シンボル</td><td>:tr_mode</td><td>:dynamic</td><td>多言語化するタイミング: :static = コンパイル時, :dynamic = 実行時</td></tr>
-<tr><td>文字列</td><td>:tr_fn</td><td>インストールした多言語化ライブラリに依存</td><td>多言語化関数は gettext の場合 `_`</td></tr>
-</tbody>
-</table>
+| Type | Name | Default | Purpose |
+| ---- | ---- | ------- | ------- |
+| 真偽値 | :tr | true | 多言語化の有効化 ('slim/translator' が読み込まれると有効化) |
+| シンボル | :tr_mode | :dynamic | 多言語化するタイミング: :static = コンパイル時, :dynamic = 実行時 |
+| 文字列 | :tr_fn | インストールした多言語化ライブラリに依存 | 多言語化関数は gettext の場合 `_` |

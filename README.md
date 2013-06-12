@@ -34,8 +34,6 @@ Slim は 不可解にならないように view の構文を本質的な部品�
 
 ## 2.0 へのアップグレード
 
-__NOTE:__ Slim 2.0 はまだリリースされていませんが, preview バージョンを試すことができます。
-
 すでに Slim 1.x を使用していて最新バージョンの 2.0 にアップグレードしたい場合, まず非推奨機能の
 エラーを出す Slim 1.3.8 にアップグレードするべきです。これはあなたのアプリケーションが Slim 2.0 に準拠
 しているか簡単に確認する方法です。
@@ -102,7 +100,7 @@ Slim テンプレートがどのようなものか簡単な例を示します:
         #content
           p このマークアップ例はあなたに Slim の典型的なファイルがどのようなものか示します。
 
-        = yield
+        == yield
 
         - if items.any?
           table#items
@@ -115,7 +113,7 @@ Slim テンプレートがどのようなものか簡単な例を示します:
             ありがとう!
 
         div id="footer"
-          = render 'footer'
+          == render 'footer'
           | Copyright &copy; #{@year} #{@author}
 
 インデントについて, インデントの深さはあなたの好みで選択できます。もし最初のインデントをスペース2つ, その次に5スペースを使いたい場合, それはあなたの選択次第です。マークアップを入れ子にするにはスペース1つのインデントが必要なだけです。
@@ -141,7 +139,7 @@ Slim テンプレートがどのようなものか簡単な例を示します:
 
     body
       p
-        |  この行は左端になります。
+        | この行は左端になります。
             この行はスペース1つを持つことになります。
               この行はスペース2つを持つことになります。
                 以下同様に...
@@ -188,19 +186,17 @@ Slim テンプレートがどのようなものか簡単な例を示します:
        "jquery",
        "application"
 
-行末がカンマ `,` で終わる場合 (例 関数呼び出し) には行末にバックスラッシュを追加する必要はありません。
+行末がカンマ `,` で終わる場合 (例 関数呼び出し) には行末にバックスラッシュを追加する必要はありません。行末スペースを追加するために修飾子の `>` や `<` もサポートします。
 
-### 出力のスペースをたどる `='`
-
-後に続くスペースを追加することを除き, 単一のイコール (`=`) と同じです。
+* `=>` は末尾のスペースを伴った出力をします。 末尾のスペースが追加されることを除いて, 単一の等合 (`=`) と同じです。古い構文の `='` も同様にサポートされます。
+* `=<` は先頭のスペースを伴った出力をします。先頭のスペースが追加されることを除いて, 単一の等号 (`=`) と同じです。
 
 ### HTML エスケープを伴わない出力 `==`
 
-単一のイコール (`=`) と同じですが, `escape_html` メソッドを経由しません。
+単一のイコール (`=`) と同じですが, `escape_html` メソッドを経由しません。 末尾や先頭のスペースを追加するための修飾子 `>` と `<` はサポートされています。
 
-### HTML エスケープを伴わず出力のスペースをたどらない `=='`
-
-後に続くスペースを追加することを除き, 二重のイコールと同じです。
+* `==>` は HTML エスケープを行わず末尾のスペースを伴った出力をします。末尾のスペースが追加されることを除いて, 二重等号 (`==`) と同じです。 古い構文の `=='` もサポートされます。
+* `==<` は HTML エスケープを行わず先頭のスペースを伴った出力をします。先頭のスペースが追加されることを除いて, 二重等号 (`==`) と同じです。
 
 ### コードコメント `/`
 
@@ -297,6 +293,22 @@ HTML 4 ドキュメントタイプ
 
 (注) 標準的な html タグ (img, br, ...) は自動的にタグを閉じるので,
 通常必要ありません。
+
+### スペースを追加する (`<`, `>`)
+
+a タグの後に > を追加することで末尾にスペースを追加するよう Slim に強制することができます。
+
+    a> href='url1' Link1
+    a> href='url2' Link2
+
+< を追加することで先頭のスペースを追加できます。
+
+    a< href='url1' Link1
+    a< href='url2' Link2
+
+これらを組み合わせて使うこともできます。
+
+    a<> href='url1' Link1
 
 ### インラインタグ
 
@@ -557,18 +569,18 @@ end
 
 次のように Slim の中で使用できます。
 
-   p
-     = headline do
-       ' Hello
-       = user.name
+    p
+      = headline do
+        ' Hello
+        = user.name
 
 `do` ブロック内のコンテンツが自動的にキャプチャされ `yield` を通してヘルパに渡されます。糖衣構文として
 `do` キーワードを省略して書くこともできます。
 
-   p
-     = headline
-       ' Hello
-       = user.name
+    p
+      = headline
+        ' Hello
+        = user.name
 
 ## テキストの展開
 
@@ -599,28 +611,25 @@ Ruby の標準的な展開方法を使用します。テキストはデフォル
 
 対応エンジン:
 
-<table>
-<thead style="font-weight:bold"><tr><td>フィルタ</td><td>必要な gem</td><td>種類</td><td>説明</td></tr></thead>
-<tbody>
-<tr><td>ruby:</td><td>なし</td><td>ショートカット</td><td>Ruby コードを埋め込むショートカット</td></tr>
-<tr><td>javascript:</td><td>なし</td><td>ショートカット</td><td> javascript コードを埋め込むショートカットで script タグで囲む</td></tr>
-<tr><td>css:</td><td>なし</td><td>ショートカット</td><td> css コードを埋め込むショートカットで style タグで囲む</td></tr>
-<tr><td>sass:</td><td>sass</td><td>コンパイル</td><td> sass コードを埋め込むショートカットで style タグで囲む</td></tr>
-<tr><td>scss:</td><td>sass</td><td>コンパイル</td><td> scss コードを埋め込むショートカットで style タグで囲む</td></tr>
-<tr><td>less:</td><td>less</td><td>コンパイル</td><td> less コードを埋め込むショートカットで style タグで囲む</td></tr>
-<tr><td>styl:</td><td>styl</td><td>コンパイル</td><td> stylus コードを埋め込むショートカットで style タグで囲む</td></tr>
-<tr><td>coffee:</td><td>coffee-script</td><td>コンパイル</td><td>コンパイルした CoffeeScript で script タグで囲む</td></tr>
-<tr><td>asciidoc:</td><td>asciidoctor</td><td>コンパイル + 展開</td><td> AsciiDoc コードのコンパイルとテキスト中の #\{variables} の展開</td></tr>
-<tr><td>markdown:</td><td>redcarpet/rdiscount/kramdown</td><td>コンパイル + 展開</td><td>Markdownのコンパイルとテキスト中の #\{variables} の展開</td></tr>
-<tr><td>textile:</td><td>redcloth</td><td>コンパイル + 展開</td><td>textile のコンパイルとテキスト中の #\{variables} の展開</td></tr>
-<tr><td>creole:</td><td>creole</td><td>コンパイル + 展開</td><td>cleole のコンパイルとテキスト中の #\{variables} の展開</td></tr>
-<tr><td>wiki:, mediawiki:</td><td>wikicloth</td><td>コンパイル + 展開</td><td>wiki のコンパイルとテキスト中の #\{variables} の展開</td></tr>
-<tr><td>rdoc:</td><td>rdoc</td><td>コンパイル + 展開</td><td>RDoc のコンパイルとテキスト中の #\{variables} の展開</td></tr>
-<tr><td>builder:</td><td>builder</td><td>プレコンパイル</td><td>builder コードの埋め込み</td></tr>
-<tr><td>nokogiri:</td><td>nokogiri</td><td>プレコンパイル</td><td>nokogiri コードの埋め込み</td></tr>
-<tr><td>erb:</td><td>なし</td><td>プレコンパイル</td><td>erb コードの埋め込み</td></tr>
-</tbody>
-</table>
+| フィルタ | 必要な gems | 種類 | 説明 |
+| -------- | ----------- | ---- | ----------- |
+| ruby: | なし | ショートカット | Ruby コードを埋め込むショートカット |
+| javascript: | なし | ショートカット | javascript コードを埋め込むショートカットで script タグで囲む |
+| css: | なし | ショートカット | css コードを埋め込むショートカットで style タグで囲む |
+| sass: | sass | コンパイル時 | sass コードを埋め込むショートカットで style タグで囲む |
+| scss: | sass | コンパイル時 | scss コードを埋め込むショートカットで style タグで囲む |
+| less: | less | コンパイル時 | less コードを埋め込むショートカットで style タグで囲む |
+| styl: | styl | コンパイル時 | stylus コードを埋め込むショートカットで style タグで囲む |
+| coffee: | coffee-script | コンパイル時 | コンパイルした CoffeeScript で script タグで囲む |
+| asciidoc: | asciidoctor | コンパイル時 + 展開 | AsciiDoc コードのコンパイルとテキスト中の # \{variables} の展開 |
+| markdown: | redcarpet/rdiscount/kramdown | コンパイル時 + 展開 | Markdownのコンパイルとテキスト中の # \{variables} の展開 |
+| textile: | redcloth | コンパイル時 + 展開 | textile のコンパイルとテキスト中の # \{variables} の展開 |
+| creole: | creole | コンパイル時 + 展開 | cleole のコンパイルとテキスト中の # \{variables} の展開 |
+| wiki:, mediawiki: | wikicloth | コンパイル時 + 展開 | wiki のコンパイルとテキスト中の # \{variables} の展開 |
+| rdoc: | rdoc | コンパイル時 + 展開 | RDoc のコンパイルとテキスト中の # \{variables} の展開 |
+| builder: | builder | プレコンパイル | builder コードの埋め込み |
+| nokogiri: | nokogiri | プレコンパイル | nokogiri コードの埋め込み |
+| erb: | なし | プレコンパイル | erb コードの埋め込み |
 
 埋め込みエンジンは Slim の `Slim::Embedded` フィルタのオプションで直接設定されます。例:
 
@@ -675,32 +684,29 @@ Rails ではコンパイルされたテンプレートエンジンのコード�
 次のオプションが `Slim::Engine` によって用意され `Slim::Engine.set_default_options` で設定することができます。
 沢山ありますが良いことに, Slim はもし誤った設定キーを使用しようとした場合キーをチェックしエラーを報告します。
 
-<table>
-<thead style="font-weight:bold"><tr><td>種類</td><td>名前</td><td>デフォルト</td><td>用途</td></tr></thead>
-<tbody>
-<tr><td>文字列</td><td>:file</td><td>nil</td><td>解析対象のファイル名ですが, Slim::Template によって自動的に設定されます</td></tr>
-<tr><td>数値</td><td>:tabsize</td><td>4</td><td>1 タブあたりのスペース数 (構文解析で利用されます)</td></tr>
-<tr><td>文字列</td><td>:encoding</td><td>"utf-8"</td><td>テンプレートのエンコーディングを設定</td></tr>
-<tr><td>文字列</td><td>:default_tag</td><td>"div"</td><td>タグ名が省略されている場合デフォルトのタグとして使用される</td></tr>
-<tr><td>ハッシュ</td><td>:shortcut</td><td>\{'.' => {:attr => 'class'}, '#' => {:attr => 'id'}}</td><td>属性のショートカット</td></tr>
-<tr><td>配列&lt;シンボル,文字列&gt;</td><td>:enable_engines</td><td>nil <i>(すべて可)</i></td><td>有効な埋め込みエンジンリスト (ホワイトリスト)</td></tr>
-<tr><td>配列&lt;シンボル,文字列&gt;</td><td>:disable_engines</td><td>nil <i>(無効なし)</i></td><td>無効な埋め込みエンジンリスト (ブラックリスト)</td></tr>
-<tr><td>真偽値</td><td>:disable_capture</td><td>false (Rails では true)</td><td>ブロック内キャプチャ無効 (ブロックはデフォルトのバッファに書き込む)</td></tr>
-<tr><td>真偽値</td><td>:disable_escape</td><td>false</td><td>文字列の自動エスケープ無効</td></tr>
-<tr><td>真偽値</td><td>:use_html_safe</td><td>false (Rails では true)</td><td>ActiveSupport の String#html_safe? を使う (:disable_escape と一緒に機能する)</td></tr>
-<tr><td>シンボル</td><td>:format</td><td>:xhtml</td><td>html の出力フォーマット (対応フォーマット :xhtml, :html4, :html5, :html)</td></tr>
-<tr><td>文字列</td><td>:attr_quote</td><td>'"'</td><td>html の属性を囲む文字 (' または " が可能)</td></tr>
-<tr><td>ハッシュ</td><td>:merge_attrs</td><td>\{'class' => ' '}</td><td>複数の html 属性が与えられた場合結合に使われる文字列 (例: class="class1 class2")</td></tr>
-<tr><td>配列&lt;文字列&gt;</td><td>:hyphen_attrs</td><td>%w(data)</td><td>属性にハッシュが与えられた場合ハイフンつなぎされます。(例: data={a:1,b:2} は data-a="1" data-b="2" のように)</td></tr>
-<tr><td>真偽値</td><td>:sort_attrs</td><td>true</td><td>名前によって属性をソート</td></tr>
-<tr><td>シンボル</td><td>:js_wrapper</td><td>nil</td><td>:comment, :cdata や :both で JavaScript をラップします。:guess を指定することで :format オプションに基いて設定することもできます。</td></tr>
-<tr><td>真偽値</td><td>:pretty</td><td>false</td><td>綺麗な html インデント<b>(遅くなります!)</b></td></tr>
-<tr><td>文字列</td><td>:indent</td><td>'  '</td><td>インデントに使用される文字列</td></tr>
-<tr><td>真偽値</td><td>:streaming</td><td>false (Rails > 3.1 では true)</td><td>ストリーミング出力の有効化</td></tr>
-<tr><td>クラス</td><td>:generator</td><td>Temple::Generators::ArrayBuffer/RailsOutputBuffer</td><td>Temple コードジェネレータ (デフォルトのジェネレータは配列バッファを生成します)</td></tr>
-<tr><td>文字列</td><td>:buffer</td><td>'_buf' (Rails では '@output_buffer')</td><td>バッファに使用される変数</td></tr>
-</tbody>
-</table>
+| 種類 | 名前 | デフォルト | 用途 |
+| ---- | ---- | ---------- | ---- |
+| 文字列 | :file | nil | 解析対象のファイル名ですが,  Slim::Template によって自動的に設定されます |
+| 数値 | :tabsize | 4 | 1 タブあたりのスペース数 (構文解析で利用されます) |
+| 文字列 | :encoding | "utf-8" | テンプレートのエンコーディングを設定 |
+| 文字列 | :default_tag | "div" | タグ名が省略されている場合デフォルトのタグとして使用される |
+| ハッシュ | :shortcut | \{'.' => {:attr => 'class'}, '#' => {:attr => 'id'}} | 属性のショートカット |
+| 配列&lt;シンボル,文字列&gt; | :enable_engines | nil <i>(すべて可)</i> | 有効な埋め込みエンジンリスト (ホワイトリスト) |
+| 配列&lt;シンボル,文字列&gt; | :disable_engines | nil <i>(無効なし)</i> | 無効な埋め込みエンジンリスト (ブラックリスト) |
+| 真偽値 | :disable_capture | false (Rails では true) | ブロック内キャプチャ無効 (ブロックはデフォルトのバッファに書き込む)  |
+| 真偽値 | :disable_escape | false | 文字列の自動エスケープ無効 |
+| 真偽値 | :use_html_safe | false (Rails では true) | ActiveSupport の String# html_safe? を使う (:disable_escape と一緒に機能する) |
+| シンボル | :format | :xhtml | html の出力フォーマット (対応フォーマット :xhtml, :html4, :html5, :html) |
+| 文字列 | :attr_quote |  '"'  | html の属性を囲む文字 (' または " が可能) |
+| ハッシュ | :merge_attrs | \{'class' => ' '} | 複数の html 属性が与えられた場合結合に使われる文字列 (例: class="class1 class2") |
+| 配列&lt;文字列&gt; | :hyphen_attrs | %w(data) | 属性にハッシュが与えられた場合ハイフンつなぎされます。(例: data={a:1, b:2} は data-a="1" data-b="2" のように) |
+| 真偽値 | :sort_attrs | true | 名前によって属性をソート |
+| シンボル | :js_wrapper | nil | :comment,  :cdata や :both で JavaScript をラップします。:guess を指定することで :format オプションに基いて設定することもできます |
+| 真偽値 | :pretty | false | 綺麗な html インデント <b>(遅くなります!)</b> |
+| 文字列 | :indent | '  ' | インデントに使用される文字列 |
+| 真偽値 | :streaming | false (Rails > 3.1 では true) | ストリーミング出力の有効化 |
+| Class | :generator | Temple::Generators::ArrayBuffer/ RailsOutputBuffer | Temple コードジェネレータ (デフォルトのジェネレータは配列バッファを生成します) |
+| 文字列 | :buffer | '_buf' (Rails では '@output_buffer') | バッファに使用される変数 |
 
 Temple フィルタによってもっと多くのオプションがサポートされていますが一覧には載せず公式にはサポートしません。
 Slim と Temple のコードを確認しなければなりません。
@@ -779,6 +785,7 @@ Usage: slimrb [options]
     -s, --stdin                      Read input from standard input instead of an input file
         --trace                      Show a full traceback on error
     -c, --compile                    Compile only but do not run
+    -e, --erb                        Convert to ERB
     -r, --rails                      Generate rails compatible code (Implies --compile)
     -t, --translator                 Enable translator plugin
     -l, --logic-less                 Enable logic less plugin
@@ -825,6 +832,7 @@ markdown:
 
 ### テンプレート変換 (HAML, ERB, ...)
 
+* Slim は gem に含まれる `slimrb` や `Slim::ERBConverter` を用いて ERB に変換できます。
 * [Haml2Slim converter](https://github.com/slim-template/haml2slim)
 * [ERB2Slim, HTML2Slim converter](https://github.com/slim-template/html2slim)
 
@@ -872,7 +880,7 @@ Slim の改良を支援したい場合, Git で管理されているプロジェ
 
 Ruby の 1.9.2 と 1.8.7 でテストをすることを覚えておいてください。
 
-もしドキュメントの不足を見つけたら (きっと見つけるでしょう), README.md をアップデートして私たちを助けて下さい。Slim に割く時間がないが, 私たちが知るべきものを何か見つけた場合には issue を送ってください。
+もしドキュメントの不足を見つけたら, README.md をアップデートして私たちを助けて下さい。Slim に割く時間がないが, 私たちが知るべきものを何か見つけた場合には issue を送ってください。
 
 ## License
 

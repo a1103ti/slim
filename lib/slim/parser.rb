@@ -204,14 +204,15 @@ module Slim
         block = [:multi]
         @stacks.last << [:slim, :control, parse_broken_line, block]
         @stacks << block
-      when /\A=/
+      when /\A=(=?)(['<>]*)/
         # Found an output block.
         # We expect the line to be broken or the next line to be indented.
-        @line =~ /\A=(=?)('?)/
         @line = $'
+        trailing_ws = $2.include?('\'') || $2.include?('>')
         block = [:multi]
+        @stacks.last << [:static, ' '] if $2.include?('<')
         @stacks.last << [:slim, :output, $1.empty?, parse_broken_line, block]
-        @stacks.last << [:static, ' '] unless $2.empty?
+        @stacks.last << [:static, ' '] if trailing_ws
         @stacks << block
       when /\A(\w+):\s*\Z/
         # Embedded template detected. It is treated as block.
@@ -296,8 +297,27 @@ module Slim
         tag = @tag_shortcut[tag]
       end
 
-      tag = [:html, :tag, tag, parse_attributes]
+      # Find any shortcut attributes
+      attributes = [:html, :attrs]
+      while @line =~ @attr_shortcut_re
+        # The class/id attribute is :static instead of :slim :interpolate,
+        # because we don't want text interpolation in .class or #id shortcut
+        attributes << [:html, :attr, @attr_shortcut[$1], [:static, $2]]
+        @line = $'
+      end
+
+      @line =~ /\A[<>']*/
+      @line = $'
+      trailing_ws = $&.include?('\'') || $&.include?('>')
+      leading_ws = $&.include?('<')
+
+      parse_attributes(attributes)
+
+      tag = [:html, :tag, tag, attributes]
+
+      @stacks.last << [:static, ' '] if leading_ws
       @stacks.last << tag
+      @stacks.last << [:static, ' '] if trailing_ws
 
       case @line
       when /\A\s*:\s*/
@@ -311,12 +331,14 @@ module Slim
         @stacks << content
         parse_tag($&)
         @stacks.delete_at(i)
-      when /\A\s*=(=?)('?)/
+      when /\A\s*=(=?)(['<>]*)/
         # Handle output code
         @line = $'
+        trailing_ws2 = $2.include?('\'') || $2.include?('>')
         block = [:multi]
+        @stacks.last << [:static, ' '] if !leading_ws && $2.include?('<')
         tag << [:slim, :output, $1 != '=', parse_broken_line, block]
-        @stacks.last << [:static, ' '] unless $2.empty?
+        @stacks.last << [:static, ' '] if !trailing_ws && trailing_ws2
         @stacks << block
       when /\A\s*\/\s*/
         # Closed tag. Do nothing
@@ -333,17 +355,7 @@ module Slim
       end
     end
 
-    def parse_attributes
-      attributes = [:html, :attrs]
-
-      # Find any shortcut attributes
-      while @line =~ @attr_shortcut_re
-        # The class/id attribute is :static instead of :slim :interpolate,
-        # because we don't want text interpolation in .class or #id shortcut
-        attributes << [:html, :attr, @attr_shortcut[$1], [:static, $2]]
-        @line = $'
-      end
-
+    def parse_attributes(attributes)
       # Check to see if there is a delimiter right after the tag name
       delimiter = nil
       if @line =~ ATTR_DELIM_RE
@@ -399,8 +411,6 @@ module Slim
           end
         end
       end
-
-      attributes
     end
 
     def parse_ruby_code(outer_delimiter)
