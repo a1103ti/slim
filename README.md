@@ -49,7 +49,7 @@ Slim 2.0 は 1.3 シリーズから非推奨機能を取り除き構文のマイ
 
 ### Slim とは?
 
-Slim は Rails3 および 4 に対応した高速, 軽量なテンプレートエンジンです。すべての主要な Ruby の実装でしっかりテストされています。
+Slim は __Rails3 および 4__ に対応した高速, 軽量なテンプレートエンジンです。すべての主要な Ruby の実装でしっかりテストされています。
 私たちは継続的インテグレーションを採用しています。(travis-ci)
 
 Slim の核となる構文は1つの考えによって導かれます: "この動作を行うために最低限必要なものは何か"。
@@ -531,6 +531,18 @@ Slim コードの中でこの様に使用できます。
 レンダリング結果
 
     <div class="person" role="admin">Daniel</div>
+
+1つのショートカットを使って複数の属性を設定することもできます。
+
+    Slim::Engine.set_default_options :shortcut => {'@' => {:attr => %w(data-role role)}}
+
+Slim の中で次のように使用し
+
+    .person@admin = person.name
+
+このようのレンダリングされます。
+
+    <div class="person" role="admin" data-role="admin">Daniel</div>
 
 #### ID ショートカット `#` と class ショートカット `.`
 
