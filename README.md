@@ -32,19 +32,6 @@ Slim は 不可解にならないように view の構文を本質的な部品�
     * 最新の Gem: <http://rubydoc.info/gems/slim/frames>
     * GitHub master: <http://rubydoc.info/github/slim-template/slim/master/frames>
 
-## 2.0 へのアップグレード
-
-すでに Slim 1.x を使用していて最新バージョンの 2.0 にアップグレードしたい場合, まず非推奨機能の
-エラーを出す Slim 1.3.8 にアップグレードするべきです。これはあなたのアプリケーションが Slim 2.0 に準拠
-しているか簡単に確認する方法です。
-
-Slim 2.0 は 1.3 シリーズから非推奨機能を取り除き構文のマイナーな矛盾を
-整理しています (属性の囲みや引用符で囲まれた属性のエスケープ)。
-もちろん新機能やバグフィックスも含みます。詳細は CHANGES を参照してください。
-
-ほとんどの場合アップグレードを恐れてはいけません。わたしたちは後方互換を保つように努め, [semantic versions](http://semver.org/) 
-に可能なかぎり対応しています。
-
 ## イントロダクション
 
 ### Slim とは?
@@ -69,7 +56,7 @@ Rails コミュニティの中で, _Erb_ と _Haml_ は間違いなく最も人�
 
 Slim は 最小限の構文とスピードをもたらすために生まれました。 もし Slim を選択しない場合, その理由はスピード以外の理由によるものでしょう。
 
-___そう, Slim は速い!___ ベンチマークはコミット毎に <http://travis-ci.org/#!/slim-template/slim> で取られています。
+___そう, Slim は速い!___ ベンチマークはコミット毎に <http://travis-ci.org/slim-template/slim> で取られています。
 この数字が信じられませんか? それは仕方ないことです。是非 rake タスクを使って自分でベンチマークを取ってみてください!
 
 ### どう始めるの?
@@ -362,6 +349,7 @@ a タグの後に > を追加することで末尾にスペースを追加する
 
 区切り文字が構文を読みやすくするのであれば,
 `{...}`, `(...)`, `[...]` が属性の囲みに使えます。
+これらの記号は設定できます (`:attr_delims` オプション参照)。
 
     body
       h1(id="logo") = page_logo
@@ -573,8 +561,15 @@ Haml と同じように, `id` と `class` の属性を次のショートカッ�
 
 ~~~ruby
 module Helpers
-  def headline
-    "<h1>#{yield}</h1>"
+  def headline(&block)
+    if defined?(::Rails)
+      # In Rails we have to use capture!
+      "<h1>#{capture(&block)}</h1>"
+    else
+      # If we are using Slim without a framework (Plain Tilt),
+      # this works directly.
+      "<h1>#{yield}</h1>"
+    end
   end
 end
 ~~~
@@ -703,6 +698,7 @@ Rails ではコンパイルされたテンプレートエンジンのコード�
 | 文字列 | :encoding | "utf-8" | テンプレートのエンコーディングを設定 |
 | 文字列 | :default_tag | "div" | タグ名が省略されている場合デフォルトのタグとして使用される |
 | ハッシュ | :shortcut | \{'.' => {:attr => 'class'}, '#' => {:attr => 'id'}} | 属性のショートカット |
+| Hash | :attr_delims | \{'(' => ')', '[' => ']', '{' => '}'} | 属性区切り文字 |
 | 配列&lt;シンボル,文字列&gt; | :enable_engines | nil <i>(すべて可)</i> | 有効な埋め込みエンジンリスト (ホワイトリスト) |
 | 配列&lt;シンボル,文字列&gt; | :disable_engines | nil <i>(無効なし)</i> | 無効な埋め込みエンジンリスト (ブラックリスト) |
 | 真偽値 | :disable_capture | false (Rails では true) | ブロック内キャプチャ無効 (ブロックはデフォルトのバッファに書き込む)  |
@@ -744,7 +740,7 @@ Slim や Temple のアーキテクチャについてよく知っている開発�
 Slim はロジックレスモードと I18n プラグインを提供しています。プラグインのドキュメントを確認してください。
 
 * [ロジックレスモード](doc/logic_less.md)
-* [多言語化/I18ne](doc/translator.md)
+* [多言語化/I18n](doc/translator.md)
 
 ## フレームワークサポート
 
@@ -862,7 +858,7 @@ markdown:
 
     rake bench slow=1 iterations=1000
 
-私たちはコミット毎に Travis-CI でベンチマークをとっています。最新のベンチマーク結果はリンク先を確認: <http://travis-ci.org/#!/slim-template/slim>
+私たちはコミット毎に Travis-CI でベンチマークをとっています。最新のベンチマーク結果はリンク先を確認: <http://travis-ci.org/slim-template/slim>
 
 ### テストスイートと継続的インテグレーション
 
@@ -871,14 +867,11 @@ rails のインテグレーションテストの場合 'rake test:rails' で実�
 
 私たちは現在 markdown ファイルで書かれた人間が読めるテストを試しています: [TESTS.md](test/literate/TESTS.md)
 
-Travis-CI は継続的インテグレーションテストに利用されています: <http://travis-ci.org/#!/slim-template/slim>
+Travis-CI は継続的インテグレーションテストに利用されています: <http://travis-ci.org/slim-template/slim>
 
 Slim はすべての主要な Ruby 実装で動作します:
 
-* Ruby 2.0.0
-* Ruby 1.8.7
-* Ruby 1.9.2
-* Ruby 1.9.3
+* Ruby 1.8.7, 1.9.3 および 2.0.0
 * Ruby EE
 * JRuby
 * Rubinius 2.0
