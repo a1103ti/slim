@@ -1,6 +1,7 @@
 # Slim
 
-[![Gem Version](https://badge.fury.io/rb/slim.png)](http://rubygems.org/gems/slim) [![Build Status](https://secure.travis-ci.org/slim-template/slim.png?branch=master)](http://travis-ci.org/slim-template/slim) [![Dependency Status](https://gemnasium.com/slim-template/slim.png?travis)](https://gemnasium.com/slim-template/slim) [![Code Climate](https://codeclimate.com/github/slim-template/slim.png)](https://codeclimate.com/github/slim-template/slim)
+[![Gem Version](https://badge.fury.io/rb/slim.png)](http://rubygems.org/gems/slim) [![Build Status](https://secure.travis-ci.org/slim-template/slim.png?branch=master)](http://travis-ci.org/slim-template/slim) [![Dependency Status](https://gemnasium.com/slim-template/slim.png?travis)](https://gemnasium.com/slim-template/slim) [![Code Climate](https://codeclimate.com/github/slim-template/slim.png)](https://codeclimate.com/github/slim-template/slim) [![Gittip donate button](http://img.shields.io/gittip/bevry.png)](https://www.gittip.com/min4d/ "Donate weekly to this project using Gittip")
+[![Flattr donate button](https://raw.github.com/balupton/flattr-buttons/master/badge-89x18.gif)](https://flattr.com/submit/auto?user_id=min4d&url=http%3A%2F%2Fslim-lang.org%2F "Donate monthly to this project using Flattr")
 
 Slim は 不可解にならないように view の構文を本質的な部品まで減らすことを目指したテンプレート言語です。標準的な HTML テンプレートからどれだけのものが削除できるか確かめるところから始まりました。(<, >, 閉じタグなど) 多くの人が Slim に興味を持ったことで, 機能性は発展し, 柔軟な構文をもたらしました。
 
@@ -897,6 +898,15 @@ Slim は [MIT license](http://www.opensource.org/licenses/MIT) に基づいて�
 * [Daniel Mendler](https://github.com/minad) (Lead developer)
 * [Andrew Stone](https://github.com/stonean)
 * [Fred Wu](https://github.com/fredwu)
+
+## 寄付とサポート
+
+このプロジェクトをサポートしたい場合, Gittip や Flattr のページを見てください。
+
+[![Gittip donate button](http://img.shields.io/gittip/bevry.png)](https://www.gittip.com/min4d/ "Donate weekly to this project using Gittip")
+[![Flattr donate button](https://raw.github.com/balupton/flattr-buttons/master/badge-89x18.gif)](https://flattr.com/submit/auto?user_id=min4d&url=http%3A%2F%2Fslim-lang.org%2F "Donate monthly to this project using Flattr")
+
+今のところ, 寄付はホスティング費用 (ドメインなど) に当てられる予定です。
 
 ## 議論
 
