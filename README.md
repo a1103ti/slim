@@ -555,8 +555,7 @@ Haml と同じように, `id` と `class` の属性を次のショートカッ�
       div class="content"
         = show_content
 
-## ヘルパとキャプチャ
-
+## ヘルパ, キャプチャとインクルード
 
 いくつかのヘルパを使用してテンプレートを拡張することもできます。次のヘルパが定義されていることを前提として,
 
@@ -564,18 +563,18 @@ Haml と同じように, `id` と `class` の属性を次のショートカッ�
 module Helpers
   def headline(&block)
     if defined?(::Rails)
-      # In Rails we have to use capture!
+      # Rails の場合には capture メソッドを使う
       "<h1>#{capture(&block)}</h1>"
     else
-      # If we are using Slim without a framework (Plain Tilt),
-      # this works directly.
+      # フレームワークなしで Slim を使う場合(Tilt の場合), 
+      # ただ出力する
       "<h1>#{yield}</h1>"
     end
   end
 end
 ~~~
 
-次のように Slim の中で使用できます。
+このインクルードされたコードのスコープは実行される Slim のテンプレートコードです。Slim テンプレートの中では次のように使用することができます。
 
     p
       = headline do
@@ -589,6 +588,25 @@ end
       = headline
         ' Hello
         = user.name
+
+これまで幾度となく Slim にサブテンプレートのインクルードがリクエストされてきました。今ではコア機能として実装されなくとも
+簡単に独自のヘルパを書いて使用することができます。このインクルードは実行時に行われます。
+
+~~~ruby
+module Helpers
+  def include_slim(name, options = {}, &block)
+    Slim::Template.new("#{name}.slim", options).render(self, &block)
+  end
+end
+~~~
+
+このヘルパは次のように使用できます
+
+    nav= include_slim 'menu'
+    section= include_slim 'content'
+
+しかし, このヘルパはキャッシュを行いません。その為, 目的にあったよりインテリジェントなバージョンを
+実装する必要があります。また, ほとんどのフレームワークにはすでに同様のヘルパが含まれるので注意してください。(例: Rails の `render` メソッド)
 
 ## テキストの展開
 
@@ -753,7 +771,8 @@ Slim は生成されたコードをコンパイルするために [Tilt](https:/
     Slim::Template.new('template.slim', optional_option_hash).render(scope)
     Slim::Template.new(optional_option_hash) { source }.render(scope)
 
-optional_option_hash は前述のオプションを持つことができます。
+optional_option_hash は前述のオプションを持つことができます。このオブジェクトのスコープは実行されるテンプレートの
+コードです。
 
 ### Sinatra
 
@@ -804,7 +823,7 @@ Usage: slimrb [options]
     -v, --version                    Print version
 </pre>
 
-'slimrb' で起動し, コードをタイプし Ctrl-d で EOF を送ります。使い方例: 
+'slimrb' で起動し, コードをタイプし Ctrl-d で EOF を送ります。Windows のコマンドプロンプトでは Ctrl-z で EOF を送ります。使い方例: 
 
 <pre>
 $ slimrb
