@@ -1,3 +1,7 @@
+# Slimの日本語版 README.md は本家リポジトリで管理されるようになりました。
+
+本家リポジトリの [README.jp.md](https://github.com/slim-template/slim/blob/master/README.jp.md) を参照するようにしてください。
+
 # Slim
 
 [![Gem Version](https://badge.fury.io/rb/slim.png)](http://rubygems.org/gems/slim) [![Build Status](https://secure.travis-ci.org/slim-template/slim.png?branch=master)](http://travis-ci.org/slim-template/slim) [![Dependency Status](https://gemnasium.com/slim-template/slim.png?travis)](https://gemnasium.com/slim-template/slim) [![Code Climate](https://codeclimate.com/github/slim-template/slim.png)](https://codeclimate.com/github/slim-template/slim) [![Gittip donate button](http://img.shields.io/gittip/bevry.png)](https://www.gittip.com/min4d/ "Donate weekly to this project using Gittip")
